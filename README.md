@@ -86,3 +86,7 @@ Stretch goals:
 - Filter trainers based on price
 - List trainers based on most classes held
 - Create login feature
+
+##FIGMA BOARD
+
+https://www.figma.com/file/ukVWmjVXYcEZHs0zmf0xSr/phase4-project?type=whiteboard&node-id=0-1&t=UVazj217DHq9c5Bs-0
