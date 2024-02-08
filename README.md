@@ -6,7 +6,7 @@
 
 
 ## One sentence app description:
-App that helps owners to keep track of dog training.
+App for dog training company to sign up new dogs, add new classes and trainers.
 
 ## Domain Model: 
 ![domainmodel](https://i.imgur.com/f5isEXU.png)
@@ -17,59 +17,53 @@ CRUD:
 
 C. Add dogs, trainers, and classes
 
-R. Search trainers, dogs, an
+R. Search dogs, classes, trainers
 
-U. Update 
+U. Update dog, classes, trainers
 
-D
+D. Delete dogs
 
 
 ## BACKEND (API)
 ### MODELS
 * many-to-many relationship
-* A `Customer` has many `Coffee`s through `Order`s
-* A `Coffee` has many `Customer`s through `Order`s 
-* A `Order` belongs to a `Customer` and belongs to a `Coffee`
+* A `Dog` has many `Trainer`s through `Class`s
+* A `Trainer` has many `Dog`s through `Class`s 
+* A `Class` belongs to a `Dog` and belongs to a `Trainer`
 
 
 ### validations 
-* Add validations to the `Customer` model:
+* Add validations to the `Dog` model:
 * - must have a `name`
-* Add validations to the `Coffee` model:
+* Add validations to the `Class` model:
 * - must have a 'name' 
-  - must have a `price` between 1 and 20
+* Add validations to the `Trainer` model:
+  - must have a `price` between 1 and 100
+
 
 
 ## CONTROLLERS
 ​​API routes 
 RESTful conventions 
 ```
-GET /coffees/
-POST /coffees/
+GET /dogs/
+POST /dogs/
 ```
 
 ```
-GET /coffees/<int:id>
-PATCH /coffees/<int:id>
-DELETE /coffees/<int:id>
+GET /dogs/<int:id>
+PATCH /dogs/<int:id>
+DELETE /dogs/<int:id>
 ```
 ```
-GET /customers/
-POST /customers/
+GET /classes/
+POST /classes/
 ```
 ```
-GET /customers/<int:id>
-PATCH /customers/<int:id>
-DELETE /customers/<int:id>
+GET /trainers/<int:id>
+PATCH /trainers/<int:id>
+DELETE /trainers/<int:id>
 ```
-```
-GET /orders/
-POST /orders/
-```
-```
-GET /orders/<int:id>
-PATCH /orders/<int:id>
-DELETE /orders/<int:id>
 ```
 
 
