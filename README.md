@@ -13,9 +13,14 @@ App that helps owners to keep track of dog training.
 
 
 ## MVP:
-C
-R
-U
+CRUD:
+
+C. Add dogs, trainers, and classes
+
+R. Search trainers, dogs, an
+
+U. Update 
+
 D
 
 
