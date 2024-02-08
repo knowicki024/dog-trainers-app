@@ -8,8 +8,11 @@
 ## One sentence app description:
 App for dog training company to sign up new dogs, add new classes and trainers.
 
-## Domain Model: 
-![domainmodel](https://i.imgur.com/f5isEXU.png)
+## Domain Model/ERD: 
+<!-- ![domainmodel](https://i.imgur.com/f5isEXU.png) -->
+![domainmodel](image-1.png)
+![ERD](image.png)
+
 
 
 ## MVP:
@@ -17,7 +20,7 @@ CRUD:
 
 C. Add dogs, trainers, and classes
 
-R. Search dogs, classes, trainers
+R. View dogs, classes, trainers
 
 U. Update dog, classes, trainers
 
@@ -80,7 +83,6 @@ Which components will make requests to your API? What route will the competent s
 
 EXTRA!
 Stretch goals:
--
--
--
--
+- Filter trainers based on price
+- List trainers based on most classes held
+- Create login feature
