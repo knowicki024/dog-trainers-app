@@ -45,7 +45,7 @@ def create_classes(dogs, trainers):
             dog_id=rc([dog.id for dog in dogs]),
             trainer_id=rc([trainer.id for trainer in trainers])
         )
-        classes.append(s)
+        classes.append(c)
 
     return classes
 

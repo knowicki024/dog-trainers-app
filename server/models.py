@@ -1,7 +1,7 @@
 from sqlalchemy_serializer import SerializerMixin
 from sqlalchemy.ext.associationproxy import association_proxy
 
-from config import db
+from config import db, metadata
 
 # Models go here!
 class Dog(db.Model, SerializerMixin):
@@ -49,8 +49,6 @@ class Class(db.Model, SerializerMixin):
     trainer = db.relationship('Trainer', back_populates='classes')
 
 
-
-    
     # Add serialization rules
     
     def __repr__(self):
