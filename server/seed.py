@@ -18,7 +18,7 @@ def create_trainers():
     for _ in range(5):
         t = Trainer(
             name=fake.name(),
-            price=rc(range(50, 100))
+            price=rc(range(50, 101))
         )
         trainers.append(t)
 
@@ -29,7 +29,7 @@ def create_dogs():
     breeds = ["Labrador Retriever", "German Shepherd", "Golden Retriever", "French Bulldog", "Bulldog", "Poodle", "Beagle", "Rottweiler", "Siberian Husky", "Dachshund"]
     for _ in range(15):
         d = Dog(
-            name=fake.name(),
+            name=fake.first_name(),
             owner=fake.name(),
             breed = rc(breeds)
         )
