@@ -17,7 +17,7 @@ def create_trainers():
     trainers = []
     for _ in range(5):
         t = Trainer(
-            name=fake.name(),
+            name=fake.first_name(),
             price=rc(range(50, 101))
         )
         trainers.append(t)
