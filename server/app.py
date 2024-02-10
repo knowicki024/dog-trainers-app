@@ -18,15 +18,13 @@ app.secret_key=b'\x9f\xae\x80\x05q\xe6\xa3EOe\xac\xde#\xf9\xa6\xa7'
 def index():
     return '<h1>Project Server</h1>'
 
-
 @app.before_request        #allows any users to see all dogs and login 
 def check_if_logged_in():
     allowed_endpoints = ['dogs', 'login', 'logout', 'trainers' ]
     
-    if not session['user_id'] \
+    if not session['user_id']    \
         and request.endpoint not in allowed_endpoints :
         return {'error': 'Unauthorized, Please Login'}, 401
-
 
 class Dogs(Resource):
     def get(self):  
@@ -45,8 +43,7 @@ class Dogs(Resource):
             db.session.commit()
             return make_response(new_dog.to_dict(rules=('-classes',)), 201)
         except ValueError:
-            return make_response({'error': 'Failed to add new dog, try again!'}, 400)
-        
+            return make_response({'error': 'Failed to add new dog, try again!'}, 400)  
 
 class DogsById(Resource):
     def get(self, id):
@@ -119,7 +116,6 @@ class TrainersById(Resource):
                 return make_response(trainer.to_dict(rules=('-classes',)), 202)
             except ValueError:
                 return make_response({'error': 'Failed to edit trainer'}, 400)
-            
 
 class Classes(Resource):
     def get(self):  
@@ -147,7 +143,6 @@ class ClassesById(Resource):
             return make_response(class_inst.to_dict(), 200)
         return make_response({'error': 'Class not found'},404)
     
-    
     def delete(self, id):
         class_inst = Class.query.filter(Class.id == id).first()
         if class_inst:
@@ -167,19 +162,13 @@ class ClassesById(Resource):
                 return make_response(class_inst.to_dict(), 202)
             except ValueError:
                 return make_response({'error': 'Failed to edit class'}, 400)
-    
-    
+
 api.add_resource(Classes, '/classes')   
 api.add_resource(ClassesById, '/classes/<int:id>')
-
 api.add_resource(TrainersById, '/trainers/<int:id>')
 api.add_resource(Trainers, '/trainers', endpoint='trainers')
 api.add_resource(Dogs, '/dogs', endpoint='dogs')
 api.add_resource(DogsById, '/dogs/<int:id>')
-
-
-
-
 
 #authentification
 class CheckSession(Resource):
@@ -190,7 +179,6 @@ class CheckSession(Resource):
         else:
             return {'message': '401: Not Authorized'}, 401
 
-api.add_resource(CheckSession, '/check_session')
 
 class Login(Resource):
     def post(self):
@@ -203,15 +191,18 @@ class Login(Resource):
                 return make_response({'error': 'Invalid username'}, 401)
         except ValueError:
             return make_response({'error': 'Login failed'}, 400)
-
-api.add_resource(Login, '/login', endpoint='login')
+        
 
 class Logout(Resource):
     def delete(self):
         session['user_id'] = None
         return {'message': '204: No Content'}, 204
+    
 
+api.add_resource(CheckSession, '/check_session')
+api.add_resource(Login, '/login', endpoint='login')
 api.add_resource(Logout, '/logout', endpoint='logout')
+
 
 
 
