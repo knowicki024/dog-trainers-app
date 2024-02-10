@@ -19,6 +19,16 @@ def index():
     return '<h1>Project Server</h1>'
 
 
+@app.before_request        #allows any users to see all dogs and login 
+def check_if_logged_in():
+    allowed_endpoints = ['dogs', 'login', 'logout' ]
+    
+    if not session['user_id'] \
+        and request.endpoint not in allowed_endpoints :
+        return {'error': 'Unauthorized, Please Login'}, 401
+
+
+
 class Dogs(Resource):
     def get(self):  
         dogs = [dog.to_dict(rules=('-classes',)) for dog in Dog.query.all()]
@@ -54,10 +64,8 @@ class DogsById(Resource):
             return make_response({}, 204)
         return make_response({'error': 'Dog not found'}, 404)
     
-api.add_resource(Dogs, '/dogs')
+api.add_resource(Dogs, '/dogs', endpoint='dogs')
 api.add_resource(DogsById, '/dogs/<int:id>')
-
-
 
 
 
@@ -81,14 +89,14 @@ class Login(Resource):
         session['user_id'] = trainer.id
         return trainer.to_dict()
 
-api.add_resource(Login, '/login')
+api.add_resource(Login, '/login', endpoint='login')
 
 class Logout(Resource):
     def delete(self):
         session['user_id'] = None
         return {'message': '204: No Content'}, 204
 
-api.add_resource(Logout, '/logout')
+api.add_resource(Logout, '/logout', endpoint='logout')
 
 
 
