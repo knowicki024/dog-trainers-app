@@ -29,8 +29,7 @@ function Login({onLogin}){
             if (error.message === 'Invalid username') {
                 window.alert('Invalid username. Please try again.')
             }
-        })
-    }
+        })}
     
     return (
         <form onSubmit={handleSubmit} >
@@ -41,9 +40,6 @@ function Login({onLogin}){
           />
           <button type="submit">Login</button>
         </form>
-      );
-    }
-
-
+      )}
 
 export default Login
