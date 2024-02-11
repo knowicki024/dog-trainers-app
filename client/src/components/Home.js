@@ -9,7 +9,14 @@ function Home() {
 
     const onLogin = (user) => {
     setUser(user);
-}
+    }
+
+    useEffect(() =>{
+        fetch('/check_session')
+            .then(r => r.json())
+            .then(user => setUser(user))
+    }, [])
+
 
     return(
     <>
