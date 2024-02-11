@@ -4,7 +4,7 @@ function Login({onLogin}){
     const [username, setUsername]= useState('')
 
     const handleSubmit = (e) => {
-        e.preventDefault();
+        e.preventDefault()
         
         fetch('/login', {
             method: "POST",
