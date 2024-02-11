@@ -21,9 +21,8 @@ def index():
 @app.before_request        #allows any users to see all dogs and login 
 def check_if_logged_in():
     allowed_endpoints = ['dogs', 'login', 'logout', 'trainers' ]
-    
-    if not session['user_id']    \
-        and request.endpoint not in allowed_endpoints :
+    user_id = session.get('user_id')
+    if not user_id and request.endpoint not in allowed_endpoints :
         return {'error': 'Unauthorized, Please Login'}, 401
 
 class Dogs(Resource):
