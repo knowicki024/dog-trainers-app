@@ -1,8 +1,6 @@
 from sqlalchemy_serializer import SerializerMixin
 from sqlalchemy.ext.associationproxy import association_proxy
 from sqlalchemy.orm import validates
-
-
 from config import db, metadata
 
 # Models go here!
@@ -27,7 +25,6 @@ class Dog(db.Model, SerializerMixin):
             raise ValueError('Name, Owner, and breed must exist!')
         return value
 
-    
     def __repr__(self):
         return f'<Dog {self.id}: {self.name} Owner:{self.owner}>'
     
@@ -46,16 +43,13 @@ class Trainer(db.Model, SerializerMixin):
     @validates('name', 'price')
     def validate_trainer(self, key, value):
         if key == 'name':
-            if not value:
-                raise ValueError('Name must exist')
+            if not value or (not isinstance(value, str)):
+                raise ValueError('Name must be a chracter!')
             return value
         if key == 'price':
             if not 50 <= value <= 100:
                 raise ValueError('Price must be between 50 and 100!')
             return value
-        
-
-
     
     def __repr__(self):
         return f'<Trainer {self.id}: {self.name} Hourly:{self.price}>'
