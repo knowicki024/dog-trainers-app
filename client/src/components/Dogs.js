@@ -7,22 +7,26 @@ function Dogs() {
   const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
-    // Simulate fetching data from a database
-    const fetchDogs = () => {
-      setTimeout(() => {
-        setDogs([
-          { id: 1, name: 'Rex', breed: 'Labrador' },
-          { id: 2, name: 'Bella', breed: 'Husky' },
-        ]);
-      }, 1000); // Simulate network request delay
+    const fetchDogs = async () => {
+      try {
+        const response = await fetch('/dogs');
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        const dogArr = await response.json();
+        setDogs(dogArr);
+      } catch (error) {
+        console.error("Failed to fetch dogs:", error);
+      }
     };
-
     fetchDogs();
-  }, []); // Empty dependency array means this effect runs once on mount
+  }, []);
+        
 
-  const handleAddDog = (dog) => {
-    setDogs([...dogs, { ...dog, id: Date.now() }]);
-  };
+
+//   const handleAddDog = (dog) => {
+//     setDogs([...dogs, { ...dog, id: Date.now() }]);
+//   };
 
   const handleDeleteDog = (id) => {
     setDogs(dogs.filter(dog => dog.id !== id));
