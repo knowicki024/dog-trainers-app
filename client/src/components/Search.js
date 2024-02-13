@@ -1,28 +1,29 @@
 import React, { useState } from 'react';
 
-// Example dog data
-const dogsData = [
-  { id: 1, name: 'Buddy' },
-  { id: 2, name: 'Charlie' },
-  { id: 3, name: 'Max' },
-  { id: 4, name: 'Bella' },
-  // Add more dogs as needed
-];
-
 function DogSearch() {
   const [query, setQuery] = useState('');
-  const [filteredDogs, setFilteredDogs] = useState(dogsData);
+  const [filteredDogs, setFilteredDogs] = useState([]);
 
-  const handleSearch = (event) => {
+  const handleSearch = async (event) => {
     const value = event.target.value.toLowerCase();
     setQuery(value);
 
-    const filtered = dogsData.filter(dog => dog.name.toLowerCase().includes(value));
-    setFilteredDogs(filtered);
+    try {
+      const response = await fetch(`http://127.0.0.1:5555/dogs?search=${value}`);
+      if (!response.ok) {
+        throw new Error(`Error: ${response.statusText}`);
+      }
+      const dogs = await response.json();
+      setFilteredDogs(dogs);
+    } catch (error) {
+      console.error('Failed to fetch dogs', error);
+      setFilteredDogs([]); 
+    }
   };
 
   return (
     <div>
+      <h2>Search Dogs</h2> 
       <input
         type="text"
         placeholder="Search for dogs by name..."
@@ -30,14 +31,12 @@ function DogSearch() {
         onChange={handleSearch}
       />
       <div>
-        {filteredDogs.length > 0 ? (
+        {filteredDogs.length > 0 && (
           <ul>
             {filteredDogs.map((dog) => (
               <li key={dog.id}>{dog.name}</li>
             ))}
           </ul>
-        ) : (
-          <p>No dogs found.</p>
         )}
       </div>
     </div>
@@ -45,3 +44,5 @@ function DogSearch() {
 }
 
 export default DogSearch;
+
+
