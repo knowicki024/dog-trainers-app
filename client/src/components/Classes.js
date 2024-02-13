@@ -3,38 +3,39 @@ import React, { useState, useEffect } from 'react';
 function DogTrainingClass() {
   const [classes, setClasses] = useState([]);
   const [editIndex, setEditIndex] = useState(-1);
-  const [newClass, setNewClass] = useState({ name: '', description: '' });
+  const [formData, setFormData] = useState({
+    name: "",
+    dog_id: "",
+    trainer_id: "",
+  });
 
   useEffect(() => {
-    const fetchClasses = async () => {
-      try {
-        const response = await fetch('/classes');
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-        const classArr = await response.json();
-        setClasses(classArr);
-      } catch (error) {
-        console.error("Failed to fetch trainers:", error);
-      }
-    };
-    fetchClasses();
-  }, []);    
+    fetch('/classes')
+      .then((r) => r.json())
+      .then((fetchedClasses) => setClasses(fetchedClasses))
+      .catch((error) => console.error('Error fetching classes:', error));
+  }, []);
 
+  const handleAddClass = (event) => {
+    event.preventDefault();
 
-  const handleAddClass = () => {
-    if (editIndex >= 0) {
-      // Update existing class
-      const updatedClasses = classes.map((item, index) =>
-        index === editIndex ? newClass : item
-      );
-      setClasses(updatedClasses);
-      setEditIndex(-1);
-    } else {
-      // Add new class
-      setClasses([...classes, { ...newClass, id: Date.now() }]);
-    }
-    setNewClass({ name: '', description: '' }); // Reset form
+    fetch('/classes', {
+      method: "POST",
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(formData),
+    })
+    .then((r) => r.json())
+    .then((newClass) => {
+      // Assuming the response includes the newly added class
+      setClasses([...classes, newClass]);
+      setFormData({ name: "", dog_id: "", trainer_id: "" }); // Reset form data
+    })
+    .catch((error) => console.error('Error:', error));
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
   };
 
   const handleDeleteClass = (index) => {
@@ -42,14 +43,10 @@ function DogTrainingClass() {
     setClasses(filteredClasses);
   };
 
+  // This function seems to be intended for editing but lacks implementation details
   const handleEditClass = (index) => {
-    setNewClass(classes[index]);
-    setEditIndex(index);
-  };
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setNewClass({ ...newClass, [name]: value });
+    // Implementation for editing logic will go here
+    console.log('Edit functionality to be implemented');
   };
 
   return (
@@ -59,16 +56,23 @@ function DogTrainingClass() {
         <input
           type="text"
           name="name"
-          value={newClass.name}
+          value={formData.name}
           onChange={handleChange}
           placeholder="Class Name"
         />
         <input
           type="text"
-          name="description"
-          value={newClass.description}
+          name="dog_id"
+          value={formData.dog_id}
           onChange={handleChange}
-          placeholder="Description"
+          placeholder="Dog ID"
+        />
+        <input
+          type="text"
+          name="trainer_id"
+          value={formData.trainer_id}
+          onChange={handleChange}
+          placeholder="Trainer ID"
         />
         <button onClick={handleAddClass}>
           {editIndex >= 0 ? 'Update Class' : 'Add Class'}
@@ -77,7 +81,7 @@ function DogTrainingClass() {
       <ul>
         {classes.map((classItem, index) => (
           <li key={index}>
-            <strong>{classItem.name}</strong>: {classItem.description}
+            <strong>{classItem.name}</strong>: {classItem.dog_id} {classItem.trainer_id}
             <button onClick={() => handleEditClass(index)}>Edit</button>
             <button onClick={() => handleDeleteClass(index)}>Delete</button>
           </li>

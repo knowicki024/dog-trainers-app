@@ -3,23 +3,13 @@ import React, { useState, useEffect } from 'react';
 function Trainers() {
   const [trainers, setTrainers] = useState([]);
   const [editTrainer, setEditTrainer] = useState(null);
-  const [newTrainer, setNewTrainer] = useState({ name: '', specialty: '' });
+  const [newTrainer, setNewTrainer] = useState({ name: '', price: '' });
 
-  // Simulate fetching trainers from a database on component mount
   useEffect(() => {
-    const fetchedTrainers = async () => {
-        try {
-            const response = await fetch('/trainers/');
-            if (!response.ok) {
-                throw new Error("Couldn't fetch trainers from database");
-            }
-            const trainerArr = await response.json();
-            setTrainers(trainerArr);
-        } catch (error) {
-            console.error("failed to fetch trainer:", error);
-        }
-    };
-    fetchedTrainers();
+    fetch('/trainers')
+      .then((r) => r.json())
+      .then((fetchedTrainers) => setTrainers(fetchedTrainers))
+      .catch((error) => console.error('Error fetching trainer:', error)); // Removed the semicolon before .catch
   }, []);
 
 
@@ -33,8 +23,8 @@ function Trainers() {
       const newId = trainers.length > 0 ? Math.max(...trainers.map(t => t.id)) + 1 : 1;
       setTrainers([...trainers, { ...newTrainer, id: newId }]);
     }
-    setEditTrainer(null);
-    setNewTrainer({ name: '', specialty: '' });
+    setEditTrainer(null); // Reset edit state
+    setNewTrainer({ name: '', specialty: '' }); // Reset form
   };
 
   const handleEditTrainer = (trainer) => {

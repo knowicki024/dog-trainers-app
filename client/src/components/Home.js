@@ -1,7 +1,4 @@
 import React , {useState, useEffect} from 'react';
-import Classes from './Classes';
-import Trainers from './Trainers';
-import Dogs from './Dogs';
 import Login from './Login'
 import Logout from './Logout'
 
@@ -31,9 +28,6 @@ function Home({onLogOut, onLogin, user}) {
 
     return(
     <>
-        {/* <Classes/>
-        <Trainers/>
-        <Dogs/> */}
         {user ? 
                 (<div>
                 <p>Welcome {user.name}!</p>
