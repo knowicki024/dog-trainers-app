@@ -6,36 +6,41 @@ function DogTrainingClass() {
   const [newClass, setNewClass] = useState({ name: '', description: '' });
 
   useEffect(() => {
-    const fetchClasses = async () => {
-      try {
-        const response = await fetch('/classes');
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-        const classArr = await response.json();
-        setClasses(classArr);
-      } catch (error) {
-        console.error("Failed to fetch trainers:", error);
-      }
-    };
-    fetchClasses();
-  }, []);    
+    fetch('/classes')
+    .then((r) => r.json())
+    .then((fetchedClasses) => setClasses(fetchedClasses))
+    .catch((error) => console.error('Error fetching classes:', error));
+  }, []);
 
 
   const handleAddClass = () => {
-    if (editIndex >= 0) {
-      // Update existing class
-      const updatedClasses = classes.map((item, index) =>
-        index === editIndex ? newClass : item
-      );
-      setClasses(updatedClasses);
-      setEditIndex(-1);
-    } else {
-      // Add new class
-      setClasses([...classes, { ...newClass, id: Date.now() }]);
-    }
-    setNewClass({ name: '', description: '' }); // Reset form
+    const requestOptions = {
+      method: editIndex >= 0 ? 'PATCH' : 'POST', 
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(newClass),
+    };
+  
+    const url = editIndex >= 0 ? `/classes/${classes.id}` : '/classes';
+  
+    fetch(url, requestOptions)
+      .then((response) => response.json())
+      .then((savedClass) => {
+        if (editIndex >= 0) {
+          const updatedClasses = classes.map((item, index) =>
+            index === editIndex ? savedClass : item
+          );
+          setClasses(updatedClasses);
+        } else {
+          setClasses([...classes, savedClass]);
+        }
+        setEditIndex(-1); 
+        setNewClass({ name: '', description: '' }); 
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      });
   };
+  
 
   const handleDeleteClass = (index) => {
     const filteredClasses = classes.filter((_, i) => i !== index);
