@@ -3,58 +3,50 @@ import React, { useState, useEffect } from 'react';
 function DogTrainingClass() {
   const [classes, setClasses] = useState([]);
   const [editIndex, setEditIndex] = useState(-1);
-  const [newClass, setNewClass] = useState({ name: '', description: '' });
+  const [formData, setFormData] = useState({
+    name: "",
+    dog_id: "",
+    trainer_id: "",
+  });
 
   useEffect(() => {
     fetch('/classes')
-    .then((r) => r.json())
-    .then((fetchedClasses) => setClasses(fetchedClasses))
-    .catch((error) => console.error('Error fetching classes:', error));
+      .then((r) => r.json())
+      .then((fetchedClasses) => setClasses(fetchedClasses))
+      .catch((error) => console.error('Error fetching classes:', error));
   }, []);
 
+  const handleAddClass = (event) => {
+    event.preventDefault();
 
-  const handleAddClass = () => {
-    const requestOptions = {
-      method: editIndex >= 0 ? 'PATCH' : 'POST', 
+    fetch('/classes', {
+      method: "POST",
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(newClass),
-    };
-  
-    const url = editIndex >= 0 ? `/classes/${classes.id}` : '/classes';
-  
-    fetch(url, requestOptions)
-      .then((response) => response.json())
-      .then((savedClass) => {
-        if (editIndex >= 0) {
-          const updatedClasses = classes.map((item, index) =>
-            index === editIndex ? savedClass : item
-          );
-          setClasses(updatedClasses);
-        } else {
-          setClasses([...classes, savedClass]);
-        }
-        setEditIndex(-1); 
-        setNewClass({ name: '', description: '' }); 
-      })
-      .catch((error) => {
-        console.error('Error:', error);
-      });
+      body: JSON.stringify(formData),
+    })
+    .then((r) => r.json())
+    .then((newClass) => {
+      // Assuming the response includes the newly added class
+      setClasses([...classes, newClass]);
+      setFormData({ name: "", dog_id: "", trainer_id: "" }); // Reset form data
+    })
+    .catch((error) => console.error('Error:', error));
   };
-  
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
 
   const handleDeleteClass = (index) => {
     const filteredClasses = classes.filter((_, i) => i !== index);
     setClasses(filteredClasses);
   };
 
+  // This function seems to be intended for editing but lacks implementation details
   const handleEditClass = (index) => {
-    setNewClass(classes[index]);
-    setEditIndex(index);
-  };
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setNewClass({ ...newClass, [name]: value });
+    // Implementation for editing logic will go here
+    console.log('Edit functionality to be implemented');
   };
 
   return (
@@ -64,16 +56,23 @@ function DogTrainingClass() {
         <input
           type="text"
           name="name"
-          value={newClass.name}
+          value={formData.name}
           onChange={handleChange}
           placeholder="Class Name"
         />
         <input
           type="text"
-          name="description"
-          value={newClass.description}
+          name="dog_id"
+          value={formData.dog_id}
           onChange={handleChange}
-          placeholder="Description"
+          placeholder="Dog ID"
+        />
+        <input
+          type="text"
+          name="trainer_id"
+          value={formData.trainer_id}
+          onChange={handleChange}
+          placeholder="Trainer ID"
         />
         <button onClick={handleAddClass}>
           {editIndex >= 0 ? 'Update Class' : 'Add Class'}
@@ -82,7 +81,7 @@ function DogTrainingClass() {
       <ul>
         {classes.map((classItem, index) => (
           <li key={index}>
-            <strong>{classItem.name}</strong>: {classItem.description}
+            <strong>{classItem.name}</strong>: {classItem.dog_id} {classItem.trainer_id}
             <button onClick={() => handleEditClass(index)}>Edit</button>
             <button onClick={() => handleDeleteClass(index)}>Delete</button>
           </li>
