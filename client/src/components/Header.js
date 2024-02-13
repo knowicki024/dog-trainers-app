@@ -1,15 +1,23 @@
-import React from 'react';
-import { Link } from "react-router-dom";
+// import { Link } from "react-router-dom"
+import {Navbar, Container, Nav} from 'react-bootstrap'
+function Header()
+{
+    return (
+        <>
+        <Navbar bg="dark" data-bs-theme="dark">
+          <Container>
+            <Navbar.Brand href="/">Dog Trainer Company</Navbar.Brand>
+            <Nav className="me-auto">
+              <Nav.Link href="/">Home</Nav.Link>
+              <Nav.Link href="/dogs">Dogs</Nav.Link>
+              <Nav.Link href="/classes">Classes</Nav.Link>
+              <Nav.Link href="/trainers">Trainers</Nav.Link>
 
-function Header() {
-  return (
-    <header className="header">
-      <Link to="/" className="home-link">
-        <h1>Dog Training Classes</h1>
-      </Link>
-    </header>
-  );
+            </Nav>
+          </Container>
+        </Navbar>
+        </>
+    )
 }
 
-export default Header;
-
+export default Header
