@@ -37,25 +37,6 @@ function DogTrainingClass() {
     .catch((error) => console.error('Error:', error));
   };
 
-//   function handleEditClassSubmit() {
-
-//     fetch(`/classes/${classes.id}`, {
-//         method: "PATCH",
-//         headers: {'Content-Type': 'application/json'},
-//         body: JSON.stringify(formData),
-//     })
-//     .then((r) => r.json())
-//     .then((updatedClass) => {
-//       const updatedClasses = classes.map((item) => 
-//         item.id === classes.id ? updatedClass : item
-//       );
-//       setClasses(updatedClasses);
-//       setEditIndex(-1); 
-//       setFormData({ name: "", dog_id: "", trainer_id: "" }); 
-//     })
-//     .catch((error) => console.error('Error:', error));
-//   };
-
   const handleDeleteClass = (id) => {
     const url = `/classes/${id}`; 
     fetch(url, {

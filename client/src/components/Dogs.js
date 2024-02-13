@@ -3,10 +3,12 @@ import { Link } from 'react-router-dom';
 import Search from './Search';
 import ListGroup from 'react-bootstrap/ListGroup';
 import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form';
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
 
-
-
-function Dogs({user}) {
+function Dogs({ user }) {
   const [dogs, setDogs] = useState([]);
   const [editDog, setEditDog] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
@@ -33,9 +35,14 @@ function Dogs({user}) {
       .then((r) => r.json())
       .then((newDog) => {
         setDogs([...dogs, newDog]);
-        setFormData({ name: "", owner: "", breed: "" });
+        setFormData({ name: "", owner: "", breed: "" }); // Reset form
       })
       .catch((error) => console.error('Error:', error));
+  };
+
+  const handleInputChange = (event) => {
+    const { name, value } = event.target;
+    setFormData({ ...formData, [name]: value });
   };
 
   const handleDeleteDog = (id) => {
@@ -55,61 +62,51 @@ function Dogs({user}) {
   );
 
   return (
-    <div>
+    <Container>
       <Search searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
-      <ul>
+      <ListGroup>
         {filteredDogs.map((dog) => (
-          <li key={dog.id}>
-            <Link to={`/dogs/${dog.id}`}>
-              {dog.name} ({dog.breed})
+          <ListGroup.Item key={dog.id} className="d-flex justify-content-between align-items-center">
+            <Link to={user ? `/dogs/${dog.id}` : '/'}
+                  onClick={() => {
+                  if (!user) {
+                          alert('Please log in to view dog details.');
+                          }}}
+            >
+            {dog.name} ({dog.breed})
             </Link>
-            <button onClick={() => setEditDog(dog)}>Edit</button>
-            <button onClick={() => handleDeleteDog(dog.id)}>Delete</button>
-          </li>
+            <div>
+              <Button onClick={() => setEditDog(dog)} variant="outline-secondary" size="sm">Edit</Button>{' '}
+              <Button onClick={() => handleDeleteDog(dog.id)} variant="outline-danger" size="sm">Delete</Button>
+            </div>
+          </ListGroup.Item>
         ))}
-      </ul>
-      {editDog && (
-        <form onSubmit={(e) => {
-          e.preventDefault();
-          // handleEditDog function to be implemented for editing dogs
-        }}>
-          <input
-            type="text"
-            value={editDog.name}
-            onChange={(e) => setEditDog({ ...editDog, name: e.target.value })}
+      </ListGroup>
 
-          />
-          <input
-            type="text"
-            value={editDog.breed}
-            onChange={(e) => setEditDog({ ...editDog, breed: e.target.value })}
-          />
-          <button type="submit">Update Dog</button>
-        </form>
-      )}
-      <ul>
-
-        <ListGroup>
-          {filteredDogs.map((dog) => (
-            <ListGroup.Item key={dog.id}>
-              <Link to={user ? `/dogs/${dog.id}` : '/'}
-                    onClick={() => {
-                    if (!user) {
-                            alert('Please log in to view dog details.');
-                            }}}
-              >
-              {dog.name} ({dog.breed})
-              </Link>
-              <Button onClick={() => setEditDog(dog)} variant="secondary">Edit</Button>{' '}
-              <Button onClick={() => handleDeleteDog(dog.id)} variant="secondary">Delete</Button>{' '}
-            </ListGroup.Item>
-          ))}
-        </ListGroup>
-
-      </ul>
-      
-      {/* Form for adding a new dog would go here */}
-    </div>
+      <Row className="mt-4">
+        <Col>
+          <h4>{editDog ? 'Edit Dog' : 'Add a New Dog'}</h4>
+          <Form onSubmit={handleAddDog}>
+            <Form.Group className="mb-3">
+              <Form.Label>Name</Form.Label>
+              <Form.Control type="text" placeholder="Dog's name" name="name" value={formData.name} onChange={handleInputChange} />
+            </Form.Group>
+            <Form.Group className="mb-3">
+              <Form.Label>Breed</Form.Label>
+              <Form.Control type="text" placeholder="Dog's breed" name="breed" value={formData.breed} onChange={handleInputChange} />
+            </Form.Group>
+            <Form.Group className="mb-3">
+              <Form.Label>Owner</Form.Label>
+              <Form.Control type="text" placeholder="Owner's name" name="owner" value={formData.owner} onChange={handleInputChange} />
+            </Form.Group>
+            <Button variant="primary" type="submit">
+              {editDog ? 'Update Dog' : 'Add Dog'}
+            </Button>
+          </Form>
+        </Col>
+      </Row>
+    </Container>
   );
 }
+
 export default Dogs;
