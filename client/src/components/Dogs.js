@@ -1,6 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom'
 import Search from './Search';
+import ListGroup from 'react-bootstrap/ListGroup';
+import Button from 'react-bootstrap/Button';
+
+
 
 function Dogs() {
   const [dogs, setDogs] = useState([]);
@@ -47,15 +51,21 @@ function Dogs() {
     <div>
       <Search searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
       <ul>
-        {filteredDogs.map((dog) => (
-          <li key={dog.id}>
-            <Link to={`/dogs/${dog.id}`}>
-            {dog.name} ({dog.breed})
-            </Link>
-            <button onClick={() => setEditDog(dog)}>Edit</button>
-            <button onClick={() => handleDeleteDog(dog.id)}>Delete</button>
-          </li>
-        ))}
+
+        <ListGroup>
+          {filteredDogs.map((dog) => (
+            <ListGroup.Item key={dog.id}>
+              <Link to={`/dogs/${dog.id}`}>
+              {dog.name} ({dog.breed})
+              </Link>
+              {/* <button onClick={() => setEditDog(dog)}>Edit</button> */}
+              <Button onClick={() => setEditDog(dog)} variant="secondary">Edit</Button>{' '}
+              <Button oonClick={() => handleDeleteDog(dog.id)} variant="secondary">Delete</Button>{' '}
+
+            </ListGroup.Item>
+          ))}
+        </ListGroup>
+
       </ul>
       {editDog && (
         <form onSubmit={(e) => {

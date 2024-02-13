@@ -23,9 +23,6 @@ function App() {
                 <Route path="/dogs/:id" element={<DogDetail />} />
                 <Route path="/classes/:id" element={<ClassDetail />} />
                 <Route path="/trainers/:id" element={<TrainerDetail />} />
-
-
-
             </Routes>
         </>
     )
