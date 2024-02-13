@@ -32,9 +32,9 @@ function Home() {
 
     return(
     <>
-        <Classes/>
+        {/* <Classes/>
         <Trainers/>
-        <Dogs/>
+        <Dogs/> */}
         {user ? 
                 (<div>
                 <p>Welcome {user.name}!</p>
