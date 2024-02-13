@@ -33,7 +33,6 @@ const ClassDetail = () => {
             <p className="card-classes">Trainer: {cls.trainer.name}</p>
             <p className="card-classes">Price: ${cls.trainer.price}</p>
             
-            
           </div>
         </li>
       </div>

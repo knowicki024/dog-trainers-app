@@ -1,8 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Search from './Search';
+import ListGroup from 'react-bootstrap/ListGroup';
+import Button from 'react-bootstrap/Button';
 
-function Dogs() {
+
+
+function Dogs({user}) {
   const [dogs, setDogs] = useState([]);
   const [editDog, setEditDog] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
@@ -73,6 +77,7 @@ function Dogs() {
             type="text"
             value={editDog.name}
             onChange={(e) => setEditDog({ ...editDog, name: e.target.value })}
+
           />
           <input
             type="text"
@@ -82,30 +87,29 @@ function Dogs() {
           <button type="submit">Update Dog</button>
         </form>
       )}
-      {/* Form for adding a new dog */}
-      <form onSubmit={handleAddDog}>
-        <input
-          type="text"
-          value={formData.name}
-          onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-          placeholder="Dog's name"
-        />
-        <input
-          type="text"
-          value={formData.breed}
-          onChange={(e) => setFormData({ ...formData, breed: e.target.value })}
-          placeholder="Dog's breed"
-        />
-        <input
-          type="text"
-          value={formData.owner}
-          onChange={(e) => setFormData({ ...formData, owner: e.target.value })}
-          placeholder="Owner's name"
-        />
-        <button type="submit">Add Dog</button>
-      </form>
+      <ul>
+
+        <ListGroup>
+          {filteredDogs.map((dog) => (
+            <ListGroup.Item key={dog.id}>
+              <Link to={user ? `/dogs/${dog.id}` : '/'}
+                    onClick={() => {
+                    if (!user) {
+                            alert('Please log in to view dog details.');
+                            }}}
+              >
+              {dog.name} ({dog.breed})
+              </Link>
+              <Button onClick={() => setEditDog(dog)} variant="secondary">Edit</Button>{' '}
+              <Button onClick={() => handleDeleteDog(dog.id)} variant="secondary">Delete</Button>{' '}
+            </ListGroup.Item>
+          ))}
+        </ListGroup>
+
+      </ul>
+      
+      {/* Form for adding a new dog would go here */}
     </div>
   );
 }
-
 export default Dogs;
