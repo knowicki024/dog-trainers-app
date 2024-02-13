@@ -1,11 +1,14 @@
 import { useParams } from "react-router-dom"
 import {useState, useEffect} from "react"
 
-function DogDetail (){
+function DogDetail ({user}){
     const [dog, setDog] = useState({})
     const {id} = useParams()
     
-    useEffect(() => {
+    
+  
+
+      useEffect(() => {
         fetch(`/dogs/${id}`)
           .then((response) => {
             if (!response.ok) {

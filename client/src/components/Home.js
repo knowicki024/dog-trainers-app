@@ -5,29 +5,28 @@ import Dogs from './Dogs';
 import Login from './Login'
 import Logout from './Logout'
 
-function Home() {
-    const [user, setUser] = useState(null)
+function Home({onLogOut, onLogin, user}) {
 
-    const onLogin = (user) => {
-    setUser(user)
-    }
+    // const onLogin = (user) => {
+    // setUser(user)
+    // }
 
-    const onLogOut = () => {
-        setUser(null)
-    }
+    // const onLogOut = () => {
+    //     setUser(null)
+    // }
 
-    useEffect(() =>{
-        fetch('/check_session')
-            .then(r => {
-                if (!r.ok){
-                    if (r.response === 401)
-                    {setUser(null)
-                }
-            }else{
-                return r.json()
-            }})
-            .then(user => setUser(user))
-    }, [])
+    // useEffect(() =>{
+    //     fetch('/check_session')
+    //         .then(r => {
+    //             if (!r.ok){
+    //                 if (r.response === 401)
+    //                 {setUser(null)
+    //             }
+    //         }else{
+    //             return r.json()
+    //         }})
+    //         .then(user => setUser(user))
+    // }, [])
 
 
     return(
