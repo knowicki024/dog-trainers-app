@@ -16,6 +16,11 @@ function DogTrainingClass() {
       .catch((error) => console.error('Error fetching classes:', error));
   }, []);
 
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    setFormData({ ...formData, [name]: value });
+  };
+
   const handleAddClass = (event) => {
     event.preventDefault();
 
@@ -26,54 +31,68 @@ function DogTrainingClass() {
     })
     .then((r) => r.json())
     .then((newClass) => {
-      // Assuming the response includes the newly added class
       setClasses([...classes, newClass]);
       setFormData({ name: "", dog_id: "", trainer_id: "" }); // Reset form data
     })
     .catch((error) => console.error('Error:', error));
   };
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-  };
+//   function handleEditClassSubmit() {
 
-  const handleDeleteClass = (index) => {
-    const filteredClasses = classes.filter((_, i) => i !== index);
-    setClasses(filteredClasses);
-  };
+//     fetch(`/classes/${classes.id}`, {
+//         method: "PATCH",
+//         headers: {'Content-Type': 'application/json'},
+//         body: JSON.stringify(formData),
+//     })
+//     .then((r) => r.json())
+//     .then((updatedClass) => {
+//       const updatedClasses = classes.map((item) => 
+//         item.id === classes.id ? updatedClass : item
+//       );
+//       setClasses(updatedClasses);
+//       setEditIndex(-1); 
+//       setFormData({ name: "", dog_id: "", trainer_id: "" }); 
+//     })
+//     .catch((error) => console.error('Error:', error));
+//   };
 
-  // This function seems to be intended for editing but lacks implementation details
-  const handleEditClass = (index) => {
-    // Implementation for editing logic will go here
-    console.log('Edit functionality to be implemented');
+  const handleDeleteClass = (id) => {
+    const url = `/classes/${id}`; 
+    fetch(url, {
+        method: "DELETE",
+    })
+    .then(() => {
+      const filteredClasses = classes.filter((item) => item.id !== id);
+      setClasses(filteredClasses);
+    })
+    .catch((error) => console.error('Error:', error));
   };
 
   return (
     <div>
       <h2>Dog Training Classes</h2>
       <div>
-        <input
-          type="text"
-          name="name"
-          value={formData.name}
-          onChange={handleChange}
-          placeholder="Class Name"
-        />
-        <input
-          type="text"
-          name="dog_id"
-          value={formData.dog_id}
-          onChange={handleChange}
-          placeholder="Dog ID"
-        />
-        <input
-          type="text"
-          name="trainer_id"
-          value={formData.trainer_id}
-          onChange={handleChange}
-          placeholder="Trainer ID"
-        />
+        <input 
+            type="text" 
+            name="name" 
+            value={formData.name} 
+            onChange={handleChange} 
+            placeholder="Class Name" 
+            />
+        <input 
+            type="text" 
+            name="dog_id" 
+            value={formData.dog_id} 
+            onChange={handleChange} 
+            placeholder="Dog ID" 
+            />
+        <input 
+            type="text" 
+            name="trainer_id" 
+            value={formData.trainer_id} 
+            onChange={handleChange} 
+            placeholder="Trainer ID" 
+            />
         <button onClick={handleAddClass}>
           {editIndex >= 0 ? 'Update Class' : 'Add Class'}
         </button>
@@ -82,8 +101,8 @@ function DogTrainingClass() {
         {classes.map((classItem, index) => (
           <li key={index}>
             <strong>{classItem.name}</strong>: {classItem.dog_id} {classItem.trainer_id}
-            <button onClick={() => handleEditClass(index)}>Edit</button>
-            <button onClick={() => handleDeleteClass(index)}>Delete</button>
+            <button onClick={() => setEditIndex(index) && setFormData({ name: classItem.name, dog_id: classItem.dog_id, trainer_id: classItem.trainer_id })}>Edit</button>
+            <button onClick={() => handleDeleteClass(classItem.id)}>Delete</button>
           </li>
         ))}
       </ul>

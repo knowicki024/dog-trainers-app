@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router-dom';
 import Search from './Search';
 import ListGroup from 'react-bootstrap/ListGroup';
 import Button from 'react-bootstrap/Button';
@@ -10,40 +10,68 @@ function Dogs({user}) {
   const [dogs, setDogs] = useState([]);
   const [editDog, setEditDog] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
+  const [formData, setFormData] = useState({
+    name: "",
+    owner: "",
+    breed: "",
+  });
 
   useEffect(() => {
     fetch('/dogs')
-    .then((r) => r.json())
-    .then((fetchedDogs) => setDogs(fetchedDogs))
-    .catch((error) => console.error('Error fetching dogs:', error));
+      .then((r) => r.json())
+      .then((fetchedDogs) => setDogs(fetchedDogs))
+      .catch((error) => console.error('Error fetching dogs:', error));
   }, []);
 
-//   const handleAddDog = (dog) => {
-//     setDogs([...dogs, { ...dog, id: Date.now() }]);
-//   };
-
-  const handleDeleteDog = (id) => {
-    setDogs(dogs.filter(dog => dog.id !== id))
-    // setDogs(deletedDogArray)
+  const handleAddDog = (event) => {
+    event.preventDefault();
+    fetch('/dogs', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(formData),
+    })
+      .then((r) => r.json())
+      .then((newDog) => {
+        setDogs([...dogs, newDog]);
+        setFormData({ name: "", owner: "", breed: "" });
+      })
+      .catch((error) => console.error('Error:', error));
   };
 
-  const handleEditDog = (updatedDog) => {
-    setDogs(dogs.map(dog => dog.id === updatedDog.id ? updatedDog : dog));
-    setEditDog(null); // Clear edit state
+  const handleDeleteDog = (id) => {
+    fetch(`/dogs/${id}`, {
+      method: 'DELETE',
+    })
+      .then((r) => {
+        if (r.ok) {
+          setDogs(dogs.filter((dog) => dog.id !== id));
+        }
+      })
+      .catch((error) => console.error('Error:', error));
   };
 
   const filteredDogs = dogs.filter(dog =>
-    dog.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    dog.breed.toLowerCase().includes(searchTerm.toLowerCase())
+    dog.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   return (
     <div>
       <Search searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
+      <ul>
+        {filteredDogs.map((dog) => (
+          <li key={dog.id}>
+            <Link to={`/dogs/${dog.id}`}>
+              {dog.name} ({dog.breed})
+            </Link>
+            <button onClick={() => setEditDog(dog)}>Edit</button>
+            <button onClick={() => handleDeleteDog(dog.id)}>Delete</button>
+          </li>
+        ))}
+      </ul>
       {editDog && (
         <form onSubmit={(e) => {
           e.preventDefault();
-          handleEditDog(editDog);
+          // handleEditDog function to be implemented for editing dogs
         }}>
           <input
             type="text"
@@ -85,4 +113,3 @@ function Dogs({user}) {
   );
 }
 export default Dogs;
-

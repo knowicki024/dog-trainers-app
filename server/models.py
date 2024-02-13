@@ -40,16 +40,22 @@ class Trainer(db.Model, SerializerMixin):
     # Add serialization rules
     serialize_rules=('-classes.trainer',)
 
-    @validates('name', 'price')
-    def validate_trainer(self, key, value):
-        if key == 'name':
-            if not value or (not isinstance(value, str)):
-                raise ValueError('Name must be a chracter!')
-            return value
-        if key == 'price':
-            if not 50 <= value <= 100:
-                raise ValueError('Price must be between 50 and 100!')
-            return value
+@validates('name', 'price')
+def validate_trainer(self, key, value):
+    if key == 'name':
+        if not value or not isinstance(value, str):
+            raise ValueError('Name must be a character!')
+        return value
+    if key == 'price':
+        try:
+            int_value = int(value)  # Convert value to integer
+        except ValueError:
+            raise ValueError('Price must be an integer!')
+        
+        if not 50 <= int_value <= 100:
+            raise ValueError('Price must be between 50 and 100!')
+        return int_value
+
     
     def __repr__(self):
         return f'<Trainer {self.id}: {self.name} Hourly:{self.price}>'
