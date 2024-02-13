@@ -4,6 +4,7 @@ import Header from './components/Header';
 import Classes from './components/Classes';
 import Trainers from './components/Trainers';
 import Dogs from './components/Dogs';
+import DogDetail from './components/DogDetail'
 import { Route, Routes } from 'react-router-dom';
 
 
@@ -17,6 +18,8 @@ function App() {
                 <Route path="/classes" element={<Classes />} />
                 <Route path="/dogs" element={<Dogs />} />
                 <Route path="/trainers" element={<Trainers />} />
+                <Route path="/dogs/:id" element={<DogDetail />} />
+
             </Routes>
         </>
     )

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom'
 import Search from './Search';
 
 function Dogs() {
@@ -48,7 +49,9 @@ function Dogs() {
       <ul>
         {filteredDogs.map((dog) => (
           <li key={dog.id}>
+            <Link to={`/dogs/${dog.id}`}>
             {dog.name} ({dog.breed})
+            </Link>
             <button onClick={() => setEditDog(dog)}>Edit</button>
             <button onClick={() => handleDeleteDog(dog.id)}>Delete</button>
           </li>
