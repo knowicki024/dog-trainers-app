@@ -12,7 +12,7 @@ function Header()
               <Nav.Link href="/dogs">Dogs</Nav.Link>
               <Nav.Link href="/classes">Classes</Nav.Link>
               <Nav.Link href="/trainers">Trainers</Nav.Link>
-
+      
             </Nav>
           </Container>
         </Navbar>
