@@ -7,12 +7,21 @@ function Trainers() {
 
   // Simulate fetching trainers from a database on component mount
   useEffect(() => {
-    const fetchedTrainers = [
-      { id: 1, name: 'Alex', specialty: 'Agility Training' },
-      { id: 2, name: 'Jordan', specialty: 'Obedience' },
-    ];
-    setTrainers(fetchedTrainers);
+    const fetchedTrainers = async () => {
+        try {
+            const response = await fetch('/trainers/');
+            if (!response.ok) {
+                throw new Error("Couldn't fetch trainers from database");
+            }
+            const trainerArr = await response.json();
+            setTrainers(trainerArr);
+        } catch (error) {
+            console.error("failed to fetch trainer:", error);
+        }
+    };
+    fetchedTrainers();
   }, []);
+
 
   const handleAddOrUpdateTrainer = (e) => {
     e.preventDefault();

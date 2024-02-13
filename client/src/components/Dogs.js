@@ -8,22 +8,11 @@ function Dogs() {
   const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
-    const fetchDogs = async () => {
-      try {
-        const response = await fetch('/dogs');
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-        const dogArr = await response.json();
-        setDogs(dogArr);
-      } catch (error) {
-        console.error("Failed to fetch dogs:", error);
-      }
-    };
-    fetchDogs();
+    fetch('/dogs')
+    .then((r) => r.json())
+    .then((fetchedDogs) => setDogs(fetchedDogs))
+    .catch((error) => console.error('Error fetching dogs:', error));
   }, []);
-        
-
 
 //   const handleAddDog = (dog) => {
 //     setDogs([...dogs, { ...dog, id: Date.now() }]);

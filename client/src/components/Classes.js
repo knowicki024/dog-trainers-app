@@ -5,21 +5,22 @@ function DogTrainingClass() {
   const [editIndex, setEditIndex] = useState(-1);
   const [newClass, setNewClass] = useState({ name: '', description: '' });
 
-  // Simulate fetching initial data from a database on component mount
   useEffect(() => {
     const fetchClasses = async () => {
-      // Simulated delay to mimic fetching data from a database
-      setTimeout(() => {
-        const fetchedClasses = [
-          { name: 'Basic Training', description: 'Introduction to basic commands and behaviors.' },
-          { name: 'Agility Training', description: 'Course on agility training for competitive dogs.' },
-        ];
-        setClasses(fetchedClasses);
-      }, 500); // Simulate a network request with a 500ms delay
+      try {
+        const response = await fetch('/classes');
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        const classArr = await response.json();
+        setClasses(classArr);
+      } catch (error) {
+        console.error("Failed to fetch trainers:", error);
+      }
     };
-
     fetchClasses();
-  }, []); // Empty dependency array means this effect runs once on mount
+  }, []);    
+
 
   const handleAddClass = () => {
     if (editIndex >= 0) {
