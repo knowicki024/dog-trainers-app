@@ -1,4 +1,5 @@
 import React , {useState} from 'react';
+import Form from 'react-bootstrap/Form';
 
 function Login({onLogin}){
     const [username, setUsername]= useState('')
@@ -32,14 +33,21 @@ function Login({onLogin}){
         })}
     
     return (
-        <form onSubmit={handleSubmit} >
-          <input
-            type="text"
-            value={username}
-            onChange={e => setUsername(e.target.value)}
-          />
-          <button type="submit">Login</button>
-        </form>
+        <Form onSubmit={handleSubmit}>
+            <Form.Group className="mb-3" controlId="formGroupEmail">
+                <Form.Label>Username</Form.Label>
+                <Form.Control type="text" placeholder="Enter username" value={username}
+                    onChange={e => setUsername(e.target.value)}/>
+            </Form.Group>
+        </Form>
+        // <form onSubmit={handleSubmit} >
+        //   <input
+        //     type="text"
+        //     value={username}
+        //     onChange={e => setUsername(e.target.value)}
+        //   />
+        //   <button type="submit">Login</button>
+        // </form>
       )}
 
 export default Login
