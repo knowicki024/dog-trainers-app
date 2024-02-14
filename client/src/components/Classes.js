@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 
 function DogTrainingClass({ onUpdateClass, user }) {
   const [classes, setClasses] = useState([]);
-  const [editIndex, setEditIndex] = useState(null); // Changed from -1 to null for clarity
+  const [editIndex, setEditIndex] = useState(null); 
   const [formData, setFormData] = useState({
     name: "",
     dog_id: "",
@@ -75,27 +75,27 @@ function DogTrainingClass({ onUpdateClass, user }) {
   return (
     <div>
       <h2>Dog Training Classes</h2>
-      <form onSubmit={handleSubmit}> 
-        <input 
-          type="text" 
-          name="name" 
-          value={formData.name} 
-          onChange={handleChange} 
-          placeholder="Class Name" 
+      <form onSubmit={handleSubmit}>
+        <input
+          type="text"
+          name="name"
+          value={formData.name}
+          onChange={handleChange}
+          placeholder="Class Name"
         />
-        <input 
-          type="text" 
-          name="dog_id" 
-          value={formData.dog_id} 
-          onChange={handleChange} 
-          placeholder="Dog ID" 
+        <input
+          type="text"
+          name="dog_id"
+          value={formData.dog_id}
+          onChange={handleChange}
+          placeholder="Dog ID"
         />
-        <input 
-          type="text" 
-          name="trainer_id" 
-          value={formData.trainer_id} 
-          onChange={handleChange} 
-          placeholder="Trainer ID" 
+        <input
+          type="text"
+          name="trainer_id"
+          value={formData.trainer_id}
+          onChange={handleChange}
+          placeholder="Trainer ID"
         />
         <button type="submit">
           {editIndex !== null ? 'Update Class' : 'Add Class'}
@@ -103,22 +103,24 @@ function DogTrainingClass({ onUpdateClass, user }) {
       </form>
       <ul>
         {classes.map((classItem, index) => (
-          <Link to={user ? `/classes/${classItem.id}` : '/'}
-              onClick={() => {
-                if (!user) {
-                        alert('Please log in to view classes details.');
-                        }}}
-          >
-            <li key={index}>
+          <li key={index}>
+            <Link to={user ? `/classes/${classItem.id}` : '/'}
+                  onClick={() => {
+                    if (!user) {
+                      alert('Please log in to view classes details.');
+                    }
+                  }}
+            >
               <strong>{classItem.name}</strong>: {classItem.dog_id} {classItem.trainer_id}
-              <button onClick={() => startEditClass(classItem)}>Edit</button>
-              <button onClick={() => handleDeleteClass(classItem.id)}>Delete</button>
-            </li>
             </Link>
+            <button onClick={() => startEditClass(classItem)}>Edit</button>
+            <button onClick={() => handleDeleteClass(classItem.id)}>Delete</button>
+          </li>
         ))}
       </ul>
     </div>
   );
 }
+
 
 export default DogTrainingClass;

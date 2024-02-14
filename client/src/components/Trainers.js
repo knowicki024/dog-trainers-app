@@ -79,27 +79,26 @@ function Trainers({ updateTrainers, user }) {
           value={formData.price}
           onChange={handleInputChange}
         />
-       
         <button type="submit">{editTrainer ? 'Update Trainer' : 'Add Trainer'}</button>
       </form>
       <ul>
-        {trainers.map(trainer => (
-          <Link to={user ? `/trainers/${trainer.id}` : '/'}
-            onClick={() => {
-              if (!user) {
-                      alert('Please log in to view trainer details.');
-                      }}}
-          >
+        {trainers.map((trainer) => (
           <li key={trainer.id}>
-            {trainer.name}
+            <Link to={user ? `/trainers/${trainer.id}` : '/'}
+                  onClick={(e) => {
+                    if (!user) {
+                      e.preventDefault(); // Prevent link navigation
+                      alert('Please log in to view trainer details.');
+                    }
+                  }}>
+              {trainer.name}
+            </Link>
             <button onClick={() => handleEditTrainer(trainer)}>Edit</button>
             <button onClick={() => handleDeleteTrainer(trainer.id)}>Delete</button>
           </li>
-          </Link>
         ))}
       </ul>
     </div>
   );
 }
-
 export default Trainers;
