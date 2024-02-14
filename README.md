@@ -5,7 +5,6 @@
 ### Phase and Cohort:  Phase 4/ SE111323
 
 
-
 ## App Description:
 Run your dog training business with this easy to use appliction. Manage your furry students, what trainers you have on staff and the classes they teach, along with managing the different classes you teach.
 
@@ -33,7 +32,6 @@ npm install
 npm start 
 
 ```
-
 
 ## MVP:
 CRUD:
@@ -68,31 +66,30 @@ D. Delete dogs, classes, trainers
 ## CONTROLLERS
 ​​API routes 
 RESTful conventions 
-```
-GET /dogs/
-POST /dogs/
-```
 
 ```
+```
+GET /dogs/
 GET /dogs/<int:id>
+POST /dogs/
 PATCH /dogs/<int:id>
 DELETE /dogs/<int:id>
 ```
 ```
 GET /classes/
+GET /classes/<int:id>
 POST /classes/
+PATCH /classes/<int:id>
+DELETE /classes/<int:id>
+
 ```
 ```
+GET /trainers/
 GET /trainers/<int:id>
 PATCH /trainers/<int:id>
+POST /trainers/<int:id>
 DELETE /trainers/<int:id>
 ```
-
-
-
-### Serialize rules 
-* 
-
 
 ## FRONTEND (REACT)
 - Classes, Dogs, and Trainer components from the Client side are connected to the Server side. 
@@ -104,7 +101,6 @@ DELETE /trainers/<int:id>
 ## EXTRA!
 Stretch goals:
 - Filter trainers based on price
-- List trainers based on most classes held
 - Create login feature
 
 ## FIGMA BOARD

@@ -29,6 +29,7 @@ function Login({onLogin}){
             // Show a pop-up alert for the invalid username error
             if (error.message === 'Invalid username') {
                 window.alert('Invalid username. Please try again.')
+                setUsername('') 
             }
         })}
     

@@ -12,7 +12,7 @@ function Trainers({ updateTrainers, user }) {
   const [editTrainer, setEditTrainer] = useState(null);
   const [formData, setFormData] = useState({ name: "", price: ""}); // Assume specialty is part of your data model
   const [priceAsc, setPriceAsc] = useState(true)
-  const[incomeButton, setIncomeButton] = useState(false)
+  // const[incomeButton, setIncomeButton] = useState(false)
   useEffect(() => {
     fetch('/trainers')
       .then((response) => response.json())
@@ -84,16 +84,16 @@ function Trainers({ updateTrainers, user }) {
 
 
 
-  const handleIncomeClick= () =>{
-    setIncomeButton(incomeButton =>!incomeButton)
-    const sortedTrainersByIncomeDsc = [...trainers].sort((a, b) => {
-      const incomeA = a.classes && a.classes.length > 0 ? a.price * a.classes.length : 0;
-      const incomeB = b.classes && b.classes.length > 0 ? b.price * b.classes.length : 0;
+  // const handleIncomeClick= () =>{
+  //   setIncomeButton(incomeButton =>!incomeButton)
+  //   const sortedTrainersByIncomeDsc = [...trainers].sort((a, b) => {
+  //     const incomeA = a.classes && a.classes.length > 0 ? a.price * a.classes.length : 0;
+  //     const incomeB = b.classes && b.classes.length > 0 ? b.price * b.classes.length : 0;
     
-      return incomeB - incomeA;
-    })
-    setTrainers([...sortedTrainersByIncomeDsc])
-  }
+  //     return incomeB - incomeA;
+  //   })
+  //   setTrainers([...sortedTrainersByIncomeDsc])
+  // }
   
  
   return (
@@ -109,14 +109,13 @@ function Trainers({ updateTrainers, user }) {
               <ListGroup.Item key={trainer.id} className="d-flex justify-content-between align-items-center">
                 <Link
                   to={user ? `/trainers/${trainer.id}` : '/'}
-                  onClick={(e) => {
+                  onClick={() => {
                     if (!user) {
-                      e.preventDefault();
                       alert('Please log in to view trainer details.');
                     }
                   }}
                 >
-                  {trainer.name} - ${trainer.price}
+                  {trainer.name} - ${trainer.price} - ID: {trainer.id}
                 </Link>
                 <div>
                   <Button variant="outline-secondary" size="sm" onClick={() => handleEditTrainer(trainer)}>
