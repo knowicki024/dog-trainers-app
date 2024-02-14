@@ -19,7 +19,7 @@ const TrainerDetail = () => {
           .catch((error) => console.error("Error fetching trainer details:", error));
       }, [id])
 
-      if (!trainer || !trainer.classes) {
+      if (!trainer) {
         return <p>Loading...</p>
       }
       
@@ -30,13 +30,18 @@ const TrainerDetail = () => {
           <div className="card-content">
             <h4 className="card-name">Name: {trainer.name}</h4>
             <p className="card-price">trainer: ${trainer.price}</p>
-            <h5 className="card-name">Total Classes held: {trainer.classes.length}</h5>
-
-            {trainer.classes.map((classItem) => (
-          <li key={classItem.id}>
-            <p>Class Name: {classItem.name}</p>
-          </li>
-        ))}
+            {trainer.classes && trainer.classes.length > 0 ? (
+          <div>
+              <h5 className="card-name">Total Classes held: {trainer.classes.length}</h5>
+              {trainer.classes.map((classItem) => (
+                <li key={classItem.id}>
+                  <p>Class Name: {classItem.name}</p>
+                </li>
+              ))}
+            </div>
+          ) : (
+            <p>No classes available</p>
+          )}
           </div>
         </li>
       </div>

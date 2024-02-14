@@ -60,9 +60,9 @@ function App() {
       <Header />
       <Routes>
         <Route path="/" element={<Home user={user} onLogin={onLogin} onLogOut={onLogOut} />} />
-        <Route path="/classes" element={<Classes classes={classes} onUpdateClass={updateClasses} />} />
+        <Route path="/classes" element={<Classes classes={classes} onUpdateClass={updateClasses} user={user} />} />
         <Route path="/dogs" element={<Dogs user={user} onUpdateDog={updateDogs} />} /> {/* Corrected prop name to onUpdateDog */}
-        <Route path="/trainers" element={<Trainers onUpdateTrainer={updateTrainers}/>} />
+        <Route path="/trainers" element={<Trainers onUpdateTrainer={updateTrainers} user={user}/>} />
         <Route path="/dogs/:id" element={<DogDetail user={user} />} />
         <Route path="/classes/:id" element={<ClassDetail onUpdateClass={updateClasses} />} />
         <Route path="/trainers/:id" element={<TrainerDetail />} />

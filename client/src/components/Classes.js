@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 
-function DogTrainingClass({ onUpdateClass }) {
+
+function DogTrainingClass({ onUpdateClass, user }) {
   const [classes, setClasses] = useState([]);
   const [editIndex, setEditIndex] = useState(null); // Changed from -1 to null for clarity
   const [formData, setFormData] = useState({
@@ -101,11 +103,18 @@ function DogTrainingClass({ onUpdateClass }) {
       </form>
       <ul>
         {classes.map((classItem, index) => (
-          <li key={index}>
-            <strong>{classItem.name}</strong>: {classItem.dog_id} {classItem.trainer_id}
-            <button onClick={() => startEditClass(classItem)}>Edit</button>
-            <button onClick={() => handleDeleteClass(classItem.id)}>Delete</button>
-          </li>
+          <Link to={user ? `/classes/${classItem.id}` : '/'}
+              onClick={() => {
+                if (!user) {
+                        alert('Please log in to view classes details.');
+                        }}}
+          >
+            <li key={index}>
+              <strong>{classItem.name}</strong>: {classItem.dog_id} {classItem.trainer_id}
+              <button onClick={() => startEditClass(classItem)}>Edit</button>
+              <button onClick={() => handleDeleteClass(classItem.id)}>Delete</button>
+            </li>
+            </Link>
         ))}
       </ul>
     </div>

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
+import {Link} from 'react-router-dom'
 
-function Trainers({ updateTrainers }) {
+function Trainers({ updateTrainers, user }) {
   const [trainers, setTrainers] = useState([]);
   const [editTrainer, setEditTrainer] = useState(null);
   const [formData, setFormData] = useState({ name: "", price: ""}); // Assume specialty is part of your data model
@@ -83,11 +84,18 @@ function Trainers({ updateTrainers }) {
       </form>
       <ul>
         {trainers.map(trainer => (
+          <Link to={user ? `/trainers/${trainer.id}` : '/'}
+            onClick={() => {
+              if (!user) {
+                      alert('Please log in to view trainer details.');
+                      }}}
+          >
           <li key={trainer.id}>
             {trainer.name}
             <button onClick={() => handleEditTrainer(trainer)}>Edit</button>
             <button onClick={() => handleDeleteTrainer(trainer.id)}>Delete</button>
           </li>
+          </Link>
         ))}
       </ul>
     </div>
