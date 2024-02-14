@@ -1,5 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import {Link} from 'react-router-dom'
+import ListGroup from 'react-bootstrap/ListGroup';
+import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form';
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
 
 function Trainers({ updateTrainers, user }) {
   const [trainers, setTrainers] = useState([]);
@@ -62,43 +68,59 @@ function Trainers({ updateTrainers, user }) {
   };
 
   return (
-    <div>
-      <h2>Trainers</h2>
-      <form onSubmit={handleAddOrUpdateTrainer}>
-        <input
-          type="text"
-          name="name"
-          placeholder="Name"
-          value={formData.name}
-          onChange={handleInputChange}
-        />
-        <input
-          type="text"
-          name="price"
-          placeholder="Price"
-          value={formData.price}
-          onChange={handleInputChange}
-        />
-        <button type="submit">{editTrainer ? 'Update Trainer' : 'Add Trainer'}</button>
-      </form>
-      <ul>
+    <Container>
+      <ListGroup className="mt-4">
         {trainers.map((trainer) => (
-          <li key={trainer.id}>
+          <ListGroup.Item key={trainer.id} className="d-flex justify-content-between align-items-center">
             <Link to={user ? `/trainers/${trainer.id}` : '/'}
                   onClick={(e) => {
                     if (!user) {
-                      e.preventDefault(); // Prevent link navigation
+                      e.preventDefault();
                       alert('Please log in to view trainer details.');
                     }
                   }}>
-              {trainer.name}
+              {trainer.name} - ${trainer.price}
             </Link>
-            <button onClick={() => handleEditTrainer(trainer)}>Edit</button>
-            <button onClick={() => handleDeleteTrainer(trainer.id)}>Delete</button>
-          </li>
+            <div>
+              <Button variant="outline-secondary" size="sm" onClick={() => handleEditTrainer(trainer)}>Edit</Button>{' '}
+              <Button variant="outline-danger" size="sm" onClick={() => handleDeleteTrainer(trainer.id)}>Delete</Button>
+            </div>
+          </ListGroup.Item>
         ))}
-      </ul>
-    </div>
+      </ListGroup>
+
+      <Row className="mt-4">
+        <Col>
+          <h4>{editTrainer ? 'Edit Trainer' : 'Add a New Trainer'}</h4>
+          <Form onSubmit={handleAddOrUpdateTrainer}>
+            <Form.Group className="mb-3">
+              <Form.Label>Name</Form.Label>
+              <Form.Control 
+                type="text" 
+                placeholder="Trainer's name" 
+                name="name" 
+                value={formData.name} 
+                onChange={handleInputChange} 
+              />
+            </Form.Group>
+            <Form.Group className="mb-3">
+              <Form.Label>Price</Form.Label>
+              <Form.Control 
+                type="text" 
+                placeholder="Price" 
+                name="price" 
+                value={formData.price} 
+                onChange={handleInputChange} 
+              />
+            </Form.Group>
+            <Button variant="primary" type="submit">
+              {editTrainer ? 'Update Trainer' : 'Add Trainer'}
+            </Button>
+          </Form>
+        </Col>
+      </Row>
+    </Container>
   );
 }
+
 export default Trainers;

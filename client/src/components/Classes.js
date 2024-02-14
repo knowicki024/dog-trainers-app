@@ -1,5 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import ListGroup from 'react-bootstrap/ListGroup';
+import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form';
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
 
 
 function DogTrainingClass({ onUpdateClass, user }) {
@@ -73,52 +79,67 @@ function DogTrainingClass({ onUpdateClass, user }) {
   };
 
   return (
-    <div>
-      <h2>Dog Training Classes</h2>
-      <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          name="name"
-          value={formData.name}
-          onChange={handleChange}
-          placeholder="Class Name"
-        />
-        <input
-          type="text"
-          name="dog_id"
-          value={formData.dog_id}
-          onChange={handleChange}
-          placeholder="Dog ID"
-        />
-        <input
-          type="text"
-          name="trainer_id"
-          value={formData.trainer_id}
-          onChange={handleChange}
-          placeholder="Trainer ID"
-        />
-        <button type="submit">
-          {editIndex !== null ? 'Update Class' : 'Add Class'}
-        </button>
-      </form>
-      <ul>
+    <Container>
+      <Row className="mt-4">
+        <Col>
+          <h2>Dog Training Classes</h2>
+          <Form onSubmit={handleSubmit}>
+            <Form.Group className="mb-3">
+              <Form.Label>Class Name</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Enter class name"
+                name="name"
+                value={formData.name}
+                onChange={handleChange}
+              />
+            </Form.Group>
+            <Form.Group className="mb-3">
+              <Form.Label>Dog ID</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Enter dog ID"
+                name="dog_id"
+                value={formData.dog_id}
+                onChange={handleChange}
+              />
+            </Form.Group>
+            <Form.Group className="mb-3">
+              <Form.Label>Trainer ID</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Enter trainer ID"
+                name="trainer_id"
+                value={formData.trainer_id}
+                onChange={handleChange}
+              />
+            </Form.Group>
+            <Button variant="primary" type="submit">
+              {editIndex !== null ? 'Update Class' : 'Add Class'}
+            </Button>
+          </Form>
+        </Col>
+      </Row>
+      <ListGroup className="mt-4">
         {classes.map((classItem, index) => (
-          <li key={index}>
+          <ListGroup.Item key={index} className="d-flex justify-content-between align-items-center">
             <Link to={user ? `/classes/${classItem.id}` : '/'}
-                  onClick={() => {
+                  onClick={(e) => {
                     if (!user) {
-                      alert('Please log in to view classes details.');
+                      e.preventDefault();
+                      alert('Please log in to view class details.');
                     }
-                  }}
-            >
-              <strong>{classItem.name}</strong>: {classItem.dog_id} {classItem.trainer_id}
+                  }}>
+              <strong>{classItem.name}</strong> - Dog ID: {classItem.dog_id}, Trainer ID: {classItem.trainer_id}
             </Link>
-            <button onClick={() => startEditClass(classItem)}>Edit</button>
-            <button onClick={() => handleDeleteClass(classItem.id)}>Delete</button>
-          </li>
+            <div>
+              <Button variant="outline-secondary" size="sm" onClick={() => startEditClass(classItem)}>Edit</Button>{' '}
+              <Button variant="outline-danger" size="sm" onClick={() => handleDeleteClass(classItem.id)}>Delete</Button>
+            </div>
+          </ListGroup.Item>
         ))}
-      </ul>
-    </div>
+      </ListGroup>
+    </Container>
   );
 }
 

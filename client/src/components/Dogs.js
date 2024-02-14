@@ -110,15 +110,29 @@ function Dogs({ user, updateDogs }) {
           <Form onSubmit={handleSubmit}>
             <Form.Group className="mb-3">
               <Form.Label>Name</Form.Label>
-              <Form.Control type="text" placeholder="Dog's name" name="name" value={formData.name} onChange={handleInputChange} />
+              <Form.Control 
+                  type="text" 
+                  placeholder="Dog's name" 
+                  name="name" value={formData.name} 
+                  onChange={handleInputChange} 
+                  />
             </Form.Group>
             <Form.Group className="mb-3">
               <Form.Label>Breed</Form.Label>
-              <Form.Control type="text" placeholder="Dog's breed" name="breed" value={formData.breed} onChange={handleInputChange} />
+              <Form.Control 
+                  type="text" 
+                  placeholder="Dog's breed" 
+                  name="breed" value={formData.breed} 
+                  onChange={handleInputChange} 
+                  />
             </Form.Group>
             <Form.Group className="mb-3">
               <Form.Label>Owner</Form.Label>
-              <Form.Control type="text" placeholder="Owner's name" name="owner" value={formData.owner} onChange={handleInputChange} />
+              <Form.Control 
+                  type="text" 
+                  placeholder="Owner's name" 
+                  name="owner" value={formData.owner} 
+                  onChange={handleInputChange} />
             </Form.Group>
             <Button variant="primary" type="submit">
               {editDog ? 'Update Dog' : 'Add Dog'}
