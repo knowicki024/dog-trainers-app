@@ -74,15 +74,19 @@ function Dogs({ user, updateDogs }) {
     setEditDog(dog.id); 
   };
 
-  const filteredDogs = dogs.filter(dog =>
-    dog.name.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const searchedDogs = dogs.filter(dog => {
+    return dog.name.toLowerCase().includes(searchTerm.toLowerCase())
+  })
+
+  const handleSearch = (e) => {
+    setSearchTerm(e.target.value);
+  }
 
   return (
     <Container>
-      <Search searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
+      <Search onSearch={handleSearch} setSearchTerm={setSearchTerm} />
       <ListGroup>
-        {filteredDogs.map((dog) => (
+        {searchedDogs.map((dog) => (
           <ListGroup.Item key={dog.id} className="d-flex justify-content-between align-items-center">
             <Link to={user ? `/dogs/${dog.id}` : '/'}
                   onClick={() => {
