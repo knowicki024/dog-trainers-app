@@ -13,6 +13,22 @@ App for dog training company to sign up new dogs, add new classes and trainers.
 ![domainmodel](image-1.png)
 ![ERD](image.png)
 
+## Deploy Application
+
+```
+Open two terminals side by side and in the first terminal run:
+
+pipenv install 
+pipenv shell
+cd server
+flask db upgrade head 
+python seed.py 
+python app.py
+
+Then in the second terminal run:
+cd client 
+npm install 
+npm start 
 
 
 ## MVP:
@@ -24,7 +40,7 @@ R. View dogs, classes, trainers
 
 U. Update dog, classes, trainers
 
-D. Delete dogs
+D. Delete dogs, classes, trainers
 
 
 ## BACKEND (API)
