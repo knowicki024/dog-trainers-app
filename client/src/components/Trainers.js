@@ -12,6 +12,7 @@ function Trainers({ updateTrainers, user }) {
   const [editTrainer, setEditTrainer] = useState(null);
   const [formData, setFormData] = useState({ name: "", price: ""}); // Assume specialty is part of your data model
   const [priceAsc, setPriceAsc] = useState(true)
+  const[incomeButton, setIncomeButton] = useState(false)
   useEffect(() => {
     fetch('/trainers')
       .then((response) => response.json())
@@ -20,7 +21,12 @@ function Trainers({ updateTrainers, user }) {
   }, []);
 
   const handleAddOrUpdateTrainer = (event) => {
-    event.preventDefault();
+    event.preventDefault()
+    if (formData.price < 50) {
+      alert('Price must be at least 50.');
+      setFormData({ name: '', price: "" })
+      return
+    }
     const method = editTrainer ? 'PATCH' : 'POST';
     const endpoint = editTrainer ? `/trainers/${editTrainer}` : '/trainers';
 
@@ -74,7 +80,22 @@ function Trainers({ updateTrainers, user }) {
   const sortedTrainersByAsc = [...trainers].sort((a, b) => a.price - b.price)
   const sortedTrainersByDsc = [...trainers].sort((a, b) => b.price - a.price)
 
-  const filteredTrainers = priceAsc ? sortedTrainersByAsc : sortedTrainersByDsc;
+  const filteredTrainers = priceAsc ? sortedTrainersByAsc : sortedTrainersByDsc
+
+
+
+  const handleIncomeClick= () =>{
+    setIncomeButton(incomeButton =>!incomeButton)
+    const sortedTrainersByIncomeDsc = [...trainers].sort((a, b) => {
+      const incomeA = a.classes && a.classes.length > 0 ? a.price * a.classes.length : 0;
+      const incomeB = b.classes && b.classes.length > 0 ? b.price * b.classes.length : 0;
+    
+      return incomeB - incomeA;
+    })
+    setTrainers([...sortedTrainersByIncomeDsc])
+  }
+  
+ 
 
   return (
     <Container>
@@ -134,6 +155,77 @@ function Trainers({ updateTrainers, user }) {
         </Col>
       </Row>
     </Container>
+    <div>
+      <h2>Trainers</h2>
+      <button onClick={(handleClick)}>{priceAsc? 'Filter Price: High to Low' : 'Filter Price: Low to High'}</button>
+      <button onClick={(handleIncomeClick)}>{incomeButton? 'Show income off': 'Show income on'}</button>
+
+      <form onSubmit={handleAddOrUpdateTrainer}>
+        <input
+          type="text"
+          name="name"
+          placeholder="Name"
+          value={formData.name}
+          onChange={handleInputChange}
+        />
+        <input
+          type="text"
+          name="price"
+          placeholder="Price"
+          value={formData.price}
+          onChange={handleInputChange}
+        />
+       
+        <button type="submit">{editTrainer ? 'Update Trainer' : 'Add Trainer'}</button>
+      </form>
+      <ul>
+        
+        {incomeButton? trainers.map(trainer => (
+          
+          <li key={trainer.id}>
+          
+              <p>
+              <Link
+              to={user ? `/trainers/${trainer.id}` : '/'}
+              onClick={() => {
+                if (!user) {
+                  alert('Please log in to view trainer details.');
+                }
+              }}
+          >
+            {trainer.name} (${trainer.price}) Total classes: {trainer.classes ? trainer.classes.length : 0} Total income: ${trainer.classes ? (trainer.classes.length * (trainer.price)) : 0}
+                </Link>
+
+              </p>
+            <button onClick={() => handleEditTrainer(trainer)}>Edit</button>
+            <button onClick={() => handleDeleteTrainer(trainer.id)}>Delete</button>
+          </li>
+
+        ))
+          :
+          filteredTrainers.map(trainer => (
+          <li key={trainer.id}>
+          
+              <p>
+              <Link
+              to={user ? `/trainers/${trainer.id}` : '/'}
+              onClick={() => {
+                if (!user) {
+                  alert('Please log in to view trainer details.');
+                }
+              }}
+          >
+            {trainer.name} (${trainer.price}) Total classes: {trainer.classes ? trainer.classes.length : 0}
+                </Link>
+
+              </p>
+            <button onClick={() => handleEditTrainer(trainer)}>Edit</button>
+            <button onClick={() => handleDeleteTrainer(trainer.id)}>Delete</button>
+          </li>
+
+        ))}
+      </ul>
+    </div>
   );
 }
 

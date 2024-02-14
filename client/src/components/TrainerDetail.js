@@ -29,7 +29,7 @@ const TrainerDetail = () => {
         <li className="card">
           <div className="card-content">
             <h4 className="card-name">Name: {trainer.name}</h4>
-            <p className="card-price">trainer: ${trainer.price}</p>
+            <p className="card-price">Price: ${trainer.price}</p>
             {trainer.classes && trainer.classes.length > 0 ? (
           <div>
               <h5 className="card-name">Total Classes held: {trainer.classes.length}</h5>
