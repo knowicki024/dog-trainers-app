@@ -52,9 +52,9 @@ def validate_trainer(self, key, value):
         except ValueError:
             raise ValueError('Price must be an integer!')
         
-        if not 50 <= value <= 100:
+        if not 50 <= int_value <= 100:
             raise ValueError('Price must be between 50 and 100!')
-        return value
+        return int_value
 
     
     def __repr__(self):
