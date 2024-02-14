@@ -82,7 +82,7 @@ function Trainers({ updateTrainers, user }) {
         <Col xs={12} md={8}>
           <h2>Trainers</h2>
           <Button onClick={handleClick} className="mb-3">
-            {priceAsc ? 'Filter Price High to Low' : 'Filter Price Low to High'}
+            {priceAsc ? 'Filter Price Low to High' : 'Filter Price High to Low'}
           </Button>
           <ListGroup>
             {filteredTrainers.map((trainer) => (
