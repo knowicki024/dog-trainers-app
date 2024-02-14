@@ -44,7 +44,7 @@ function Trainers({ updateTrainers }) {
     setFormData({
         name: trainer.name,
         price: trainer.price,
-        specialty: trainer.specialty // Assuming specialty is part of your model
+        specialty: trainer.specialty 
     });
     setEditTrainer(trainer.id);
   };
@@ -79,7 +79,6 @@ function Trainers({ updateTrainers }) {
           value={formData.price}
           onChange={handleInputChange}
         />
-        {/* Assuming you want to add/edit specialty */}
         <input
           type="text"
           name="specialty"
