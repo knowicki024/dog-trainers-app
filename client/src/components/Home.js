@@ -2,6 +2,7 @@ import React , {useState, useEffect} from 'react';
 import Login from './Login'
 import Logout from './Logout'
 
+
 function Home({onLogOut, onLogin, user}) {
 
     // const onLogin = (user) => {
