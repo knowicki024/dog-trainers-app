@@ -73,7 +73,7 @@ class DogsById(Resource):
             
 class Trainers(Resource):
     def get(self):  
-        trainers = [t.to_dict(rules=('-classes',)) for t in Trainer.query.all()]
+        trainers = [t.to_dict() for t in Trainer.query.all()]
         return make_response(trainers, 200)
     
     def post(self):
