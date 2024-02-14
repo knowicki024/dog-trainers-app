@@ -11,7 +11,7 @@ function Trainers({ updateTrainers, user }) {
   const [trainers, setTrainers] = useState([]);
   const [editTrainer, setEditTrainer] = useState(null);
   const [formData, setFormData] = useState({ name: "", price: ""}); // Assume specialty is part of your data model
-
+  const [priceAsc, setPriceAsc] = useState(true)
   useEffect(() => {
     fetch('/trainers')
       .then((response) => response.json())
@@ -67,30 +67,44 @@ function Trainers({ updateTrainers, user }) {
     .catch((error) => console.error("Error:", error));
   };
 
+  const handleClick = () =>{
+    setPriceAsc(priceAsc => !priceAsc)
+  }
+
+  const sortedTrainersByAsc = [...trainers].sort((a, b) => a.price - b.price)
+  const sortedTrainersByDsc = [...trainers].sort((a, b) => b.price - a.price)
+
+  const filteredTrainers = priceAsc ? sortedTrainersByAsc : sortedTrainersByDsc;
+
   return (
     <Container>
-      <ListGroup className="mt-4">
-        {trainers.map((trainer) => (
-          <ListGroup.Item key={trainer.id} className="d-flex justify-content-between align-items-center">
-            <Link to={user ? `/trainers/${trainer.id}` : '/'}
-                  onClick={(e) => {
-                    if (!user) {
-                      e.preventDefault();
-                      alert('Please log in to view trainer details.');
-                    }
-                  }}>
-              {trainer.name} - ${trainer.price}
-            </Link>
-            <div>
-              <Button variant="outline-secondary" size="sm" onClick={() => handleEditTrainer(trainer)}>Edit</Button>{' '}
-              <Button variant="outline-danger" size="sm" onClick={() => handleDeleteTrainer(trainer.id)}>Delete</Button>
-            </div>
-          </ListGroup.Item>
-        ))}
-      </ListGroup>
-
       <Row className="mt-4">
-        <Col>
+        <Col xs={12} md={8}>
+          <h2>Trainers</h2>
+          <Button onClick={handleClick} className="mb-3">
+            {priceAsc ? 'Filter Price High to Low' : 'Filter Price Low to High'}
+          </Button>
+          <ListGroup>
+            {filteredTrainers.map((trainer) => (
+              <ListGroup.Item key={trainer.id} className="d-flex justify-content-between align-items-center">
+                <Link to={user ? `/trainers/${trainer.id}` : '/'}
+                      onClick={(e) => {
+                        if (!user) {
+                          e.preventDefault();
+                          alert('Please log in to view trainer details.');
+                        }
+                      }}>
+                  {trainer.name} - ${trainer.price}
+                </Link>
+                <div>
+                  <Button variant="outline-secondary" size="sm" onClick={() => handleEditTrainer(trainer)}>Edit</Button>{' '}
+                  <Button variant="outline-danger" size="sm" onClick={() => handleDeleteTrainer(trainer.id)}>Delete</Button>
+                </div>
+              </ListGroup.Item>
+            ))}
+          </ListGroup>
+        </Col>
+        <Col xs={12} md={4}>
           <h4>{editTrainer ? 'Edit Trainer' : 'Add a New Trainer'}</h4>
           <Form onSubmit={handleAddOrUpdateTrainer}>
             <Form.Group className="mb-3">
