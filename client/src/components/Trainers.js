@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 function Trainers({ updateTrainers }) {
   const [trainers, setTrainers] = useState([]);
   const [editTrainer, setEditTrainer] = useState(null);
-  const [formData, setFormData] = useState({ name: "", price: "", specialty: "" }); // Assume specialty is part of your data model
+  const [formData, setFormData] = useState({ name: "", price: ""}); // Assume specialty is part of your data model
 
   useEffect(() => {
     fetch('/trainers')
@@ -29,7 +29,7 @@ function Trainers({ updateTrainers }) {
       } else {
         setTrainers([...trainers, savedTrainer]);
       }
-      setFormData({ name: '', price: '', specialty: '' });
+      setFormData({ name: '', price: "" });
       setEditTrainer(null);
     })
     .catch((error) => console.error("Error:", error));
@@ -44,7 +44,6 @@ function Trainers({ updateTrainers }) {
     setFormData({
         name: trainer.name,
         price: trainer.price,
-        specialty: trainer.specialty 
     });
     setEditTrainer(trainer.id);
   };
@@ -79,19 +78,13 @@ function Trainers({ updateTrainers }) {
           value={formData.price}
           onChange={handleInputChange}
         />
-        <input
-          type="text"
-          name="specialty"
-          placeholder="Specialty"
-          value={formData.specialty}
-          onChange={handleInputChange}
-        />
+       
         <button type="submit">{editTrainer ? 'Update Trainer' : 'Add Trainer'}</button>
       </form>
       <ul>
         {trainers.map(trainer => (
           <li key={trainer.id}>
-            {trainer.name} - {trainer.specialty}
+            {trainer.name}
             <button onClick={() => handleEditTrainer(trainer)}>Edit</button>
             <button onClick={() => handleDeleteTrainer(trainer.id)}>Delete</button>
           </li>
