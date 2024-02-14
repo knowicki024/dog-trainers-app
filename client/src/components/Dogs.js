@@ -8,9 +8,9 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 
-function Dogs({ user }) {
+function Dogs({ user, updateDogs }) {
   const [dogs, setDogs] = useState([]);
-  const [editDog, setEditDog] = useState(null);
+  const [editDog, setEditDog] = useState(null); 
   const [searchTerm, setSearchTerm] = useState('');
   const [formData, setFormData] = useState({
     name: "",
@@ -25,17 +25,25 @@ function Dogs({ user }) {
       .catch((error) => console.error('Error fetching dogs:', error));
   }, []);
 
-  const handleAddDog = (event) => {
+  const handleSubmit = (event) => {
     event.preventDefault();
-    fetch('/dogs', {
-      method: 'POST',
+    const url = editDog ? `/dogs/${editDog}` : '/dogs';
+    const method = editDog ? 'PATCH' : 'POST';
+
+    fetch(url, {
+      method: method,
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(formData),
     })
       .then((r) => r.json())
-      .then((newDog) => {
-        setDogs([...dogs, newDog]);
-        setFormData({ name: "", owner: "", breed: "" }); // Reset form
+      .then((data) => {
+        if (editDog) {
+          setDogs(dogs.map((dog) => dog.id === editDog ? data : dog));
+        } else {
+          setDogs([...dogs, data]);
+        }
+        setFormData({ name: "", owner: "", breed: "" }); 
+        setEditDog(null); 
       })
       .catch((error) => console.error('Error:', error));
   };
@@ -57,6 +65,15 @@ function Dogs({ user }) {
       .catch((error) => console.error('Error:', error));
   };
 
+  const startEditDog = (dog) => {
+    setFormData({
+      name: dog.name,
+      breed: dog.breed,
+      owner: dog.owner,
+    });
+    setEditDog(dog.id); 
+  };
+
   const filteredDogs = dogs.filter(dog =>
     dog.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
@@ -76,7 +93,7 @@ function Dogs({ user }) {
             {dog.name} ({dog.breed})
             </Link>
             <div>
-              <Button onClick={() => setEditDog(dog)} variant="outline-secondary" size="sm">Edit</Button>{' '}
+              <Button onClick={() => startEditDog(dog)} variant="outline-secondary" size="sm">Edit</Button>{' '}
               <Button onClick={() => handleDeleteDog(dog.id)} variant="outline-danger" size="sm">Delete</Button>
             </div>
           </ListGroup.Item>
@@ -86,7 +103,7 @@ function Dogs({ user }) {
       <Row className="mt-4">
         <Col>
           <h4>{editDog ? 'Edit Dog' : 'Add a New Dog'}</h4>
-          <Form onSubmit={handleAddDog}>
+          <Form onSubmit={handleSubmit}>
             <Form.Group className="mb-3">
               <Form.Label>Name</Form.Label>
               <Form.Control type="text" placeholder="Dog's name" name="name" value={formData.name} onChange={handleInputChange} />
