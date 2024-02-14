@@ -57,7 +57,8 @@ function App() {
   }
   return (
     <>
-      <Header />
+    <Header />
+
       <Routes>
         <Route path="/" element={<Home user={user} onLogin={onLogin} onLogOut={onLogOut} />} />
         <Route path="/classes" element={<Classes classes={classes} onUpdateClass={updateClasses} user={user} />} />
