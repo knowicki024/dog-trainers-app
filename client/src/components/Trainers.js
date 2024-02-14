@@ -96,7 +96,6 @@ function Trainers({ updateTrainers, user }) {
   }
   
  
-
   return (
     <Container>
       <Row className="mt-4">
@@ -108,18 +107,24 @@ function Trainers({ updateTrainers, user }) {
           <ListGroup>
             {filteredTrainers.map((trainer) => (
               <ListGroup.Item key={trainer.id} className="d-flex justify-content-between align-items-center">
-                <Link to={user ? `/trainers/${trainer.id}` : '/'}
-                      onClick={(e) => {
-                        if (!user) {
-                          e.preventDefault();
-                          alert('Please log in to view trainer details.');
-                        }
-                      }}>
+                <Link
+                  to={user ? `/trainers/${trainer.id}` : '/'}
+                  onClick={(e) => {
+                    if (!user) {
+                      e.preventDefault();
+                      alert('Please log in to view trainer details.');
+                    }
+                  }}
+                >
                   {trainer.name} - ${trainer.price}
                 </Link>
                 <div>
-                  <Button variant="outline-secondary" size="sm" onClick={() => handleEditTrainer(trainer)}>Edit</Button>{' '}
-                  <Button variant="outline-danger" size="sm" onClick={() => handleDeleteTrainer(trainer.id)}>Delete</Button>
+                  <Button variant="outline-secondary" size="sm" onClick={() => handleEditTrainer(trainer)}>
+                    Edit
+                  </Button>{' '}
+                  <Button variant="outline-danger" size="sm" onClick={() => handleDeleteTrainer(trainer.id)}>
+                    Delete
+                  </Button>
                 </div>
               </ListGroup.Item>
             ))}
@@ -130,22 +135,22 @@ function Trainers({ updateTrainers, user }) {
           <Form onSubmit={handleAddOrUpdateTrainer}>
             <Form.Group className="mb-3">
               <Form.Label>Name</Form.Label>
-              <Form.Control 
-                type="text" 
-                placeholder="Trainer's name" 
-                name="name" 
-                value={formData.name} 
-                onChange={handleInputChange} 
+              <Form.Control
+                type="text"
+                placeholder="Trainer's name"
+                name="name"
+                value={formData.name}
+                onChange={handleInputChange}
               />
             </Form.Group>
             <Form.Group className="mb-3">
               <Form.Label>Price</Form.Label>
-              <Form.Control 
-                type="text" 
-                placeholder="Price" 
-                name="price" 
-                value={formData.price} 
-                onChange={handleInputChange} 
+              <Form.Control
+                type="text"
+                placeholder="Price"
+                name="price"
+                value={formData.price}
+                onChange={handleInputChange}
               />
             </Form.Group>
             <Button variant="primary" type="submit">
@@ -155,77 +160,6 @@ function Trainers({ updateTrainers, user }) {
         </Col>
       </Row>
     </Container>
-    <div>
-      <h2>Trainers</h2>
-      <button onClick={(handleClick)}>{priceAsc? 'Filter Price: High to Low' : 'Filter Price: Low to High'}</button>
-      <button onClick={(handleIncomeClick)}>{incomeButton? 'Show income off': 'Show income on'}</button>
-
-      <form onSubmit={handleAddOrUpdateTrainer}>
-        <input
-          type="text"
-          name="name"
-          placeholder="Name"
-          value={formData.name}
-          onChange={handleInputChange}
-        />
-        <input
-          type="text"
-          name="price"
-          placeholder="Price"
-          value={formData.price}
-          onChange={handleInputChange}
-        />
-       
-        <button type="submit">{editTrainer ? 'Update Trainer' : 'Add Trainer'}</button>
-      </form>
-      <ul>
-        
-        {incomeButton? trainers.map(trainer => (
-          
-          <li key={trainer.id}>
-          
-              <p>
-              <Link
-              to={user ? `/trainers/${trainer.id}` : '/'}
-              onClick={() => {
-                if (!user) {
-                  alert('Please log in to view trainer details.');
-                }
-              }}
-          >
-            {trainer.name} (${trainer.price}) Total classes: {trainer.classes ? trainer.classes.length : 0} Total income: ${trainer.classes ? (trainer.classes.length * (trainer.price)) : 0}
-                </Link>
-
-              </p>
-            <button onClick={() => handleEditTrainer(trainer)}>Edit</button>
-            <button onClick={() => handleDeleteTrainer(trainer.id)}>Delete</button>
-          </li>
-
-        ))
-          :
-          filteredTrainers.map(trainer => (
-          <li key={trainer.id}>
-          
-              <p>
-              <Link
-              to={user ? `/trainers/${trainer.id}` : '/'}
-              onClick={() => {
-                if (!user) {
-                  alert('Please log in to view trainer details.');
-                }
-              }}
-          >
-            {trainer.name} (${trainer.price}) Total classes: {trainer.classes ? trainer.classes.length : 0}
-                </Link>
-
-              </p>
-            <button onClick={() => handleEditTrainer(trainer)}>Edit</button>
-            <button onClick={() => handleDeleteTrainer(trainer.id)}>Delete</button>
-          </li>
-
-        ))}
-      </ul>
-    </div>
   );
 }
 
