@@ -57,8 +57,8 @@ def validate_trainer(self, key, value):
         return int_value
 
     
-    def __repr__(self):
-        return f'<Trainer {self.id}: {self.name} Hourly:{self.price}>'
+def __repr__(self):
+    return f'<Trainer {self.id}: {self.name} Hourly:{self.price}>'
     
 class Class(db.Model, SerializerMixin):
     __tablename__ = 'classes'

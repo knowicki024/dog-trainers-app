@@ -110,11 +110,13 @@ class TrainersById(Resource):
             try:
                 data = request.get_json()
                 for attr in data:
-                    setattr(Trainer, attr, data[attr])
+                    setattr(trainer, attr, data[attr])
                 db.session.commit()
                 return make_response(trainer.to_dict(rules=('-classes',)), 202)
             except ValueError:
                 return make_response({'error': 'Failed to edit trainer'}, 400)
+        else:
+            return make_response({'error': 'trainer not found'}, 404)
 
 class Classes(Resource):
     def get(self):  
@@ -233,5 +235,6 @@ api.add_resource(Logout, '/logout', endpoint='logout')
 
 
 if __name__ == '__main__':
-    app.run(port=5555, debug=True)
+    app.run(host='0.0.0.0')
+    # app.run(port=5555, debug=True)
 

@@ -43,7 +43,7 @@ function Trainers({ updateTrainers }) {
   const handleEditTrainer = (trainer) => {
     setFormData({
         name: trainer.name,
-        price: trainer.price,
+        price: trainer.price
     });
     setEditTrainer(trainer.id);
   };
