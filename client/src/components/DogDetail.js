@@ -1,48 +1,56 @@
-import { useParams } from "react-router-dom"
-import {useState, useEffect} from "react"
+import { useParams } from "react-router-dom";
+import { useState, useEffect } from "react";
+import Card from 'react-bootstrap/Card';
+import ListGroup from 'react-bootstrap/ListGroup';
+import Container from 'react-bootstrap/Container';
 
-function DogDetail ({user}){
-    const [dog, setDog] = useState({})
-    const {id} = useParams()
-    
-    
-  
+function DogDetail({ user }) {
+  const [dog, setDog] = useState({});
+  const { id } = useParams();
 
-      useEffect(() => {
-        fetch(`/dogs/${id}`)
-          .then((response) => {
-            if (!response.ok) {
-              throw new Error("Network response was not ok");
-            }
-            return response.json();
-          })
-          .then((data) => setDog(data))
-          .catch((error) => console.error("Error fetching dog details:", error));
-      }, [id])
+  useEffect(() => {
+    fetch(`/dogs/${id}`)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        return response.json();
+      })
+      .then((data) => setDog(data))
+      .catch((error) => console.error("Error fetching dog details:", error));
+  }, [id]);
 
-    if (!dog || !dog.classes) {
-        return <p>Loading...</p>
-      }
+  if (!dog || !dog.classes) {
+    return <Container className="text-center mt-5"><p>Loading...</p></Container>;
+  }
 
-    return(
-        <div className="dog-detail-container">
-        <h1>Dog Details</h1>
-        <li className="card">
-  
-          <div className="card-content">
-            <h4 className="card-name">Name: {dog.name}</h4>
-            <p className="card-classes">Breed: {dog.breed}</p>
-            <p className="card-classes">Owner: {dog.owner}</p>
+  return (
+    <Container className="mt-5">
+      <Card>
+        <Card.Header>
+          <h1>Dog Details</h1>
+        </Card.Header>
+        <Card.Body>
+          <Card.Title>{dog.name}</Card.Title>
+          <Card.Text>
+            Breed: {dog.breed}
+          </Card.Text>
+          <Card.Text>
+            Owner: {dog.owner}
+          </Card.Text>
+          <h5>Classes</h5>
+          <ListGroup>
             {dog.classes.map((classItem) => (
-          <li key={classItem.id}>
-            <p>Class Name: {classItem.name}</p>
-            <p>Trainer: {classItem.trainer.name}</p>
-            <p>Price: ${classItem.trainer.price}</p>
-          </li>
-        ))}
-          </div>
-        </li>
-      </div>
-    )
+              <ListGroup.Item key={classItem.id}>
+                <strong>Class Name:</strong> {classItem.name}<br />
+                <strong>Trainer:</strong> {classItem.trainer.name}<br />
+              </ListGroup.Item>
+            ))}
+          </ListGroup>
+        </Card.Body>
+      </Card>
+    </Container>
+  );
 }
-export default DogDetail
+
+export default DogDetail;
