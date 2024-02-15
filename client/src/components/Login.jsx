@@ -20,11 +20,13 @@ function Login({onLogin}){
             body: JSON.stringify({ username, password }),
         })
         .then((response) => {
+            console.log(response);
+
             if (response.ok) {
                 // Successful response (status code in the range 200-299)
                 return response.json();
-            } else if (response.status === 401) {
-                throw new Error('Invalid username')
+            } else if (response.status === 401 || response.status === 500) {
+                throw new Error('Invalid username or password')
             }            
         })
         .then((user) => {
@@ -32,12 +34,11 @@ function Login({onLogin}){
         })
         .catch((error) => {    
             // Show a pop-up alert for the invalid username error
-            if (error.message === 'Invalid username') {
-                window.alert('Invalid username. Please try again.')
+            if (error.message === 'Invalid username or password') {
+                window.alert('Invalid username or password. Please try again.')
                 setUsername('') 
             }
         })}
-        console.log(password)
     
     return (
         <Container>
@@ -57,15 +58,8 @@ function Login({onLogin}){
                 Submit
                 </Button>
 
-            </Form>
-        
-            {/* //     type="text"
-            //     value={username}
-            //     onChange={e => setUsername(e.target.value)}
-            //   />
-            //   <button type="submit">Login</button>
-            // </form> */}
-        </Container>
+        </Form>
+      
       )}
 
 export default Login

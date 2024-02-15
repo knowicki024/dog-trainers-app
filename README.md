@@ -2,14 +2,13 @@
 
 ### Owner/s: Katie Nowicki, Tyler Kim
 
-### Phase and Cohort:  Phase 4/ SE111323
+### Phase and Cohort:  Phase4 SE111323
 
 
 ## App Description:
 Run your dog training business with this easy to use appliction. Manage your furry students, what trainers you have on staff and the classes they teach, along with managing the different classes you teach.
 
 ## Domain Model/ERD: 
-<!-- ![domainmodel](https://i.imgur.com/f5isEXU.png) -->
 ![domainmodel](image-1.png)
 ![ERD](image.png)
 
@@ -36,7 +35,7 @@ npm start
 ## MVP:
 CRUD:
 
-C. Add dogs, trainers, and classes
+C. Add dogs, classes, trainers
 
 R. View dogs, classes, trainers
 
@@ -59,8 +58,7 @@ D. Delete dogs, classes, trainers
 * Add validations to the `Classes` model:
 * - must have a 'name' 
 * Add validations to the `Trainer` model:
-  - must have a `price` between 1 and 100
-
+  - must have a `price` between 50 and 100
 
 
 ## CONTROLLERS

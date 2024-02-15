@@ -8,17 +8,16 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 
 function Trainers({ updateTrainers, user }) {
-  const [trainers, setTrainers] = useState([]);
-  const [editTrainer, setEditTrainer] = useState(null);
-  const [formData, setFormData] = useState({ name: "", price: "",  password:''}); // Assume specialty is part of your data model
+  const [trainers, setTrainers] = useState([])
+  const [editTrainer, setEditTrainer] = useState(null)
+  const [formData, setFormData] = useState({ name: "", price: "",  password:''})
   const [priceAsc, setPriceAsc] = useState(true)
-  // // const[incomeButton, setIncomeButton] = useState(false)
   
   useEffect(() => {
     fetch('/trainers')
       .then((response) => response.json())
       .then((fetchedTrainers) => setTrainers(fetchedTrainers))
-      .catch((error) => console.error('Error fetching trainers:', error));
+      .catch((error) => console.error('Error fetching trainers:', error))
   }, []);
 
   const handleAddOrUpdateTrainer = (event) => {
@@ -84,19 +83,6 @@ function Trainers({ updateTrainers, user }) {
   const filteredTrainers = priceAsc ? sortedTrainersByAsc : sortedTrainersByDsc
 
 
-
-  // const handleIncomeClick= () =>{
-  //   setIncomeButton(incomeButton =>!incomeButton)
-  //   const sortedTrainersByIncomeDsc = [...trainers].sort((a, b) => {
-  //     const incomeA = a.classes && a.classes.length > 0 ? a.price * a.classes.length : 0;
-  //     const incomeB = b.classes && b.classes.length > 0 ? b.price * b.classes.length : 0;
-    
-  //     return incomeB - incomeA;
-  //   })
-  //   setTrainers([...sortedTrainersByIncomeDsc])
-  // }
-  
- 
   return (
     <Container>
       <Row className="mt-4">
