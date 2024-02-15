@@ -39,4 +39,4 @@ const ClassDetail = () => {
     )
 }
 
-export default ClassDetail
+export default ClassDetail;
