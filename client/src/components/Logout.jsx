@@ -1,4 +1,7 @@
 import React from 'react';
+import Button from 'react-bootstrap/Button';
+import Container from 'react-bootstrap/Container';
+
 
 function Logout({onLogOut}){
 
@@ -9,9 +12,9 @@ function Logout({onLogOut}){
       }
     
       return (
-        <header>
-          <button onClick={handleLogout}>Logout</button>
-        </header>
+        <Container>
+          <Button onClick={handleLogout}>Logout</Button>
+        </Container>
       )}
 
 

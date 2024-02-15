@@ -1,52 +1,56 @@
-import React from 'react'
-import { useParams } from "react-router-dom"
-import {useState, useEffect} from "react"
+import React, { useEffect, useState } from 'react';
+import { useParams } from "react-router-dom";
+import Card from 'react-bootstrap/Card';
+import ListGroup from 'react-bootstrap/ListGroup';
+import Container from 'react-bootstrap/Container';
 
 const TrainerDetail = () => {
-    const [trainer, setTrainer] = useState({})
-    const {id} = useParams()
+  const [trainer, setTrainer] = useState({});
+  const { id } = useParams();
 
+  useEffect(() => {
+    fetch(`/trainers/${id}`)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        return response.json();
+      })
+      .then((data) => setTrainer(data))
+      .catch((error) => console.error("Error fetching trainer details:", error));
+  }, [id]);
 
-    useEffect(() => {
-        fetch(`/trainers/${id}`)
-          .then((response) => {
-            if (!response.ok) {
-              throw new Error("Network response was not ok");
-            }
-            return response.json();
-          })
-          .then((data) => setTrainer(data))
-          .catch((error) => console.error("Error fetching trainer details:", error));
-      }, [id])
+  if (!trainer) {
+    return <Container className="text-center mt-5"><p>Loading...</p></Container>;
+  }
 
-      if (!trainer) {
-        return <p>Loading...</p>
-      }
-      
   return (
-    <div className="Trainer-detail-container">
-        <h1>Trainer Details</h1>
-        <li className="card">
-          <div className="card-content">
-            <h4 className="card-name">Name: {trainer.name}</h4>
-            <p className="card-price">Price: ${trainer.price}</p>
-            {trainer.classes && trainer.classes.length > 0 ? (
-          <div>
-              <h5 className="card-name">Total Classes held: {trainer.classes.length}</h5>
-              {trainer.classes.map((classItem) => (
-                <li key={classItem.id}>
-                  <p>Class Name: {classItem.name}</p>
-                </li>
-              ))}
-            </div>
+    <Container className="mt-5">
+      <Card>
+        <Card.Header as="h1">Trainer Details</Card.Header>
+        <Card.Body>
+          <Card.Title>Name: {trainer.name}</Card.Title>
+          <Card.Text>
+            Price: ${trainer.price}
+          </Card.Text>
+          {trainer.classes && trainer.classes.length > 0 ? (
+            <>
+              <Card.Text>
+                Total Classes held: {trainer.classes.length}
+              </Card.Text>
+              <ListGroup variant="flush">
+                {trainer.classes.map((classItem) => (
+                  <ListGroup.Item key={classItem.id}>Class Name: {classItem.name}</ListGroup.Item>
+                ))}
+              </ListGroup>
+            </>
           ) : (
-            <p>No classes available</p>
+            <Card.Text>No classes available</Card.Text>
           )}
-          </div>
-        </li>
-      </div>
-    
-  )
-}
+        </Card.Body>
+      </Card>
+    </Container>
+  );
+};
 
-export default TrainerDetail
+export default TrainerDetail;
