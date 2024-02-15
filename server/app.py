@@ -83,6 +83,7 @@ class Trainers(Resource):
                 name= data['name'],
                 price= data['price']
                 )
+            new_trainer.password_hash = data['password']
             db.session.add(new_trainer)
             db.session.commit()
             return make_response(new_trainer.to_dict(rules=('-classes',)), 201)
