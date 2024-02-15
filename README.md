@@ -102,6 +102,7 @@ DELETE /trainers/<int:id>
 Stretch goals:
 - Filter trainers based on price
 - Create login feature
+-Deploy application with Render 
 
 ## FIGMA BOARD
 
