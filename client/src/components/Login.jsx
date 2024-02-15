@@ -1,18 +1,21 @@
 import React , {useState} from 'react';
 import Form from 'react-bootstrap/Form';
+import Button from 'react-bootstrap/Button';
 
 function Login({onLogin}){
     const [username, setUsername]= useState('')
+    const [password, setPassword] = useState('')
 
     const handleSubmit = (e) => {
         e.preventDefault()
+        console.log('form ')
         
         fetch('/login', {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify({ username }),
+            body: JSON.stringify({ username, password }),
         })
         .then((response) => {
             if (response.ok) {
@@ -29,8 +32,10 @@ function Login({onLogin}){
             // Show a pop-up alert for the invalid username error
             if (error.message === 'Invalid username') {
                 window.alert('Invalid username. Please try again.')
+                setUsername('') 
             }
         })}
+        console.log(password)
     
     return (
         <Form onSubmit={handleSubmit}>
@@ -39,9 +44,18 @@ function Login({onLogin}){
                 <Form.Control type="text" placeholder="Enter username" value={username}
                     onChange={e => setUsername(e.target.value)}/>
             </Form.Group>
+
+            <Form.Group className="mb-3" controlId="formBasicPassword">
+            <Form.Label>Password</Form.Label>
+            <Form.Control type="password" placeholder="Enter password" value={password}
+                onChange={e => setPassword(e.target.value)}/>
+            </Form.Group>
+            <Button variant="primary" type="submit">
+            Submit
+            </Button>
+
         </Form>
-        // <form onSubmit={handleSubmit} >
-        //   <input
+      
         //     type="text"
         //     value={username}
         //     onChange={e => setUsername(e.target.value)}

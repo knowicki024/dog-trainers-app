@@ -10,9 +10,9 @@ import Col from 'react-bootstrap/Col';
 function Trainers({ updateTrainers, user }) {
   const [trainers, setTrainers] = useState([]);
   const [editTrainer, setEditTrainer] = useState(null);
-  const [formData, setFormData] = useState({ name: "", price: ""}); // Assume specialty is part of your data model
+  const [formData, setFormData] = useState({ name: "", price: "",  password:''}); // Assume specialty is part of your data model
   const [priceAsc, setPriceAsc] = useState(true)
-  // const[incomeButton, setIncomeButton] = useState(false)
+  // // const[incomeButton, setIncomeButton] = useState(false)
   
   useEffect(() => {
     fetch('/trainers')
@@ -25,7 +25,7 @@ function Trainers({ updateTrainers, user }) {
     event.preventDefault()
     if (formData.price < 50) {
       alert('Price must be at least 50.');
-      setFormData({ name: '', price: "" })
+      setFormData({ name: '', price: "", password: '' })
       return
     }
     const method = editTrainer ? 'PATCH' : 'POST';
@@ -43,7 +43,7 @@ function Trainers({ updateTrainers, user }) {
       } else {
         setTrainers([...trainers, savedTrainer]);
       }
-      setFormData({ name: '', price: "" });
+      setFormData({ name: '', price: "", password: ""});
       setEditTrainer(null);
     })
     .catch((error) => console.error("Error:", error));
@@ -103,21 +103,20 @@ function Trainers({ updateTrainers, user }) {
         <Col xs={12} md={8}>
           <h2>Trainers</h2>
           <Button onClick={handleClick} className="mb-3">
-            {priceAsc ? 'Filter Price Low to High' : 'Filter Price High to Low'}
+            {priceAsc ? 'Filter Price High to Low' : 'Filter Price Low to High'}
           </Button>
           <ListGroup>
             {filteredTrainers.map((trainer) => (
               <ListGroup.Item key={trainer.id} className="d-flex justify-content-between align-items-center">
                 <Link
                   to={user ? `/trainers/${trainer.id}` : '/'}
-                  onClick={(e) => {
+                  onClick={() => {
                     if (!user) {
-                      e.preventDefault();
                       alert('Please log in to view trainer details.');
                     }
                   }}
                 >
-                  {trainer.name} - ${trainer.price}
+                  {trainer.name} - ${trainer.price} - ID: {trainer.id}
                 </Link>
                 <div>
                   <Button variant="outline-secondary" size="sm" onClick={() => handleEditTrainer(trainer)}>
@@ -151,6 +150,16 @@ function Trainers({ updateTrainers, user }) {
                 placeholder="Price"
                 name="price"
                 value={formData.price}
+                onChange={handleInputChange}
+              />
+            </Form.Group>
+            <Form.Group className="mb-3">
+              <Form.Label>Password</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="New password"
+                name="password"
+                value={formData.password}
                 onChange={handleInputChange}
               />
             </Form.Group>
