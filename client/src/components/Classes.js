@@ -126,6 +126,7 @@ function DogTrainingClass({ onUpdateClass, user }) {
             <Link to={user ? `/classes/${classItem.id}` : '/'}
                   onClick={(e) => {
                     if (!user) {
+                      e.preventDefault();
                       alert('Please log in to view class details.');
                     }
                   }}>
