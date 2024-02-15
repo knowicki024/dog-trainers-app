@@ -42,7 +42,7 @@ class Trainer(db.Model, SerializerMixin):
     # Add serialization rules
     serialize_rules=('-classes.trainer',)
     @hybrid_property
-    def password_hash(self):
+    def password_hash(self):    
         raise Exception('Password hashes may not be viewed.')
 #removed decode, encoding
     @password_hash.setter
