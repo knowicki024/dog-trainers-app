@@ -184,12 +184,15 @@ class CheckSession(Resource):
 class Login(Resource):
     def post(self):
         try:
+            username = request.get_json()['username']
+            password = request.get_json()['password']
+
             trainer = Trainer.query.filter(Trainer.name == request.get_json()['username']).first()
-            if trainer:
+            if trainer.authenticate(password):
                 session['user_id'] = trainer.id
-                return make_response(trainer.to_dict(), 201)
-            else:
-                return make_response({'error': 'Invalid username'}, 401)
+                return trainer.to_dict(), 200
+            return {'error': 'Invalid username or password'}, 401
+            
         except ValueError:
             return make_response({'error': 'Login failed'}, 400)
         

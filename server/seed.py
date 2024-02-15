@@ -20,9 +20,11 @@ def create_trainers():
             name=fake.first_name(),
             price=rc(range(50, 101))
         )
+        t.password_hash = 'asdasd1'
         trainers.append(t)
 
     return trainers
+
 
 def create_dogs():
     dogs = []
