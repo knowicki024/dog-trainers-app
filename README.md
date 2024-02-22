@@ -66,21 +66,21 @@ D. Delete dogs, classes, trainers
 RESTful conventions 
 
 ```
-```
 GET /dogs/
 GET /dogs/<int:id>
 POST /dogs/
 PATCH /dogs/<int:id>
 DELETE /dogs/<int:id>
 ```
+
 ```
 GET /classes/
 GET /classes/<int:id>
 POST /classes/
 PATCH /classes/<int:id>
 DELETE /classes/<int:id>
-
 ```
+
 ```
 GET /trainers/
 GET /trainers/<int:id>
